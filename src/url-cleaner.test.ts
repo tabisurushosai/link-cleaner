@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { cleanUrl } from './url-cleaner';
+import { cleanUrl } from './core/url-cleaner';
 
 describe('cleanUrl', () => {
   it('should remove utm parameters', () => {

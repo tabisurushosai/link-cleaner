@@ -1,4 +1,10 @@
-import { cleanUrl, getTrackingParams, getSubscriptionStatus, buyPremium, saveCustomParam } from './url-cleaner';
+import { createSubscriptionViewModel, createUrlViewModel } from './core/popup-view-model';
+import {
+  buyPremium,
+  getSubscriptionStatus,
+  getTrackingParams,
+  saveCustomParam
+} from './storage/link-cleaner-storage';
 
 async function init() {
   translateUI();
@@ -16,34 +22,22 @@ async function init() {
   let cleanedUrl = '';
 
   const refreshUrl = async () => {
-    if (tab?.url) {
-      if (originalDisplay) originalDisplay.textContent = tab.url;
-      const params = await getTrackingParams();
-      cleanedUrl = cleanUrl(tab.url, params);
-      if (cleanedDisplay) cleanedDisplay.textContent = cleanedUrl;
-    } else {
-      const errorMsg = chrome.i18n.getMessage('errorNotFound');
-      if (originalDisplay) originalDisplay.textContent = errorMsg;
-      if (cleanedDisplay) cleanedDisplay.textContent = errorMsg;
-    }
+    const params = tab?.url ? await getTrackingParams() : [];
+    const viewModel = createUrlViewModel(tab?.url, params, chrome.i18n.getMessage('errorNotFound'));
+    cleanedUrl = viewModel.cleanedUrl;
+    if (originalDisplay) originalDisplay.textContent = viewModel.originalText;
+    if (cleanedDisplay) cleanedDisplay.textContent = viewModel.cleanedText;
   };
 
   const refreshSubscriptionUI = async () => {
     const status = await getSubscriptionStatus();
+    const viewModel = createSubscriptionViewModel(status);
     if (subStatusDisplay) {
-      if (status.isPremium) {
-        subStatusDisplay.textContent = chrome.i18n.getMessage('premiumStatus');
-        if (buyBtn) buyBtn.style.display = 'none';
-      } else if (status.isTrialActive) {
-        subStatusDisplay.textContent = chrome.i18n.getMessage('trialStatus', [status.trialDaysLeft.toString()]);
-        if (buyBtn) buyBtn.style.display = 'block';
-      } else {
-        subStatusDisplay.textContent = chrome.i18n.getMessage('freeStatus');
-        if (buyBtn) buyBtn.style.display = 'block';
-      }
+      subStatusDisplay.textContent = chrome.i18n.getMessage(viewModel.messageKey, viewModel.messageArgs);
     }
+    if (buyBtn) buyBtn.style.display = viewModel.showBuyButton ? 'block' : 'none';
 
-    if (!status.isPremium && !status.isTrialActive) {
+    if (!viewModel.canEditCustomParams) {
       if (addParamBtn) (addParamBtn as HTMLButtonElement).disabled = true;
       if (customParamInput) customParamInput.disabled = true;
     } else {

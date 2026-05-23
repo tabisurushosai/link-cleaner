@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { getSubscriptionStatus, TRIAL_PERIOD_MS } from './url-cleaner';
+import { TRIAL_PERIOD_MS } from './core/subscription';
+import { getSubscriptionStatus } from './storage/link-cleaner-storage';
 
 // Mock chrome API
 const chromeMock = {
@@ -29,7 +30,8 @@ describe('Subscription Logic', () => {
     const status = await getSubscriptionStatus();
     
     expect(chromeMock.storage.local.set).toHaveBeenCalledWith(
-      expect.objectContaining({ trialStartTs: expect.any(Number) })
+      expect.objectContaining({ trialStartTs: expect.any(Number) }),
+      expect.any(Function)
     );
     expect(status.isPremium).toBe(false);
     expect(status.isTrialActive).toBe(true);
