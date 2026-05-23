@@ -33,7 +33,12 @@
     "message": "プレミアムユーザー"
   },
   "trialStatus": {
-    "message": "試用期間: あと$DAYS$日"
+    "message": "試用期間: あと$DAYS$日",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "freeStatus": {
     "message": "無料版 (試用期間終了)"

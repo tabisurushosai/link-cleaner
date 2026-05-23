@@ -33,7 +33,12 @@
     "message": "Premium User"
   },
   "trialStatus": {
-    "message": "Trial: $DAYS$ days left"
+    "message": "Trial: $DAYS$ days left",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "freeStatus": {
     "message": "Free Version (Trial Expired)"
