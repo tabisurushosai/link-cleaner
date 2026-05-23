@@ -11,7 +11,7 @@ const chromeMock = {
   },
 };
 
-(global as any).chrome = chromeMock;
+vi.stubGlobal('chrome', chromeMock);
 
 describe('Subscription Logic', () => {
   beforeEach(() => {
