@@ -30,4 +30,19 @@ describe('popup view model', () => {
       canEditCustomParams: false
     });
   });
+
+  it('uses a singular trial message key for one day left', () => {
+    const viewModel = createSubscriptionViewModel({
+      isPremium: false,
+      isTrialActive: true,
+      trialDaysLeft: 1
+    });
+
+    expect(viewModel).toEqual({
+      messageKey: 'trialStatusOneDay',
+      messageArgs: ['1'],
+      showBuyButton: true,
+      canEditCustomParams: true
+    });
+  });
 });

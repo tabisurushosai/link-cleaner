@@ -1,12 +1,12 @@
 {
   "extName": {
-    "message": "Clean Link"
+    "message": "Link Cleaner"
   },
   "extDesc": {
-    "message": "Copy the current URL with tracking parameters removed."
+    "message": "Remove tracking parameters (such as utm_) from the current URL and copy a cleaner link."
   },
   "appName": {
-    "message": "Clean Link"
+    "message": "Link Cleaner"
   },
   "labelBefore": {
     "message": "Original:"
@@ -27,10 +27,21 @@
     "message": "Copied!"
   },
   "statusError": {
-    "message": "Error occurred"
+    "message": "Something went wrong."
+  },
+  "statusProcessing": {
+    "message": "Processing..."
+  },
+  "statusRuleAdded": {
+    "message": "Added: $PARAM$",
+    "placeholders": {
+      "param": {
+        "content": "$1"
+      }
+    }
   },
   "premiumStatus": {
-    "message": "Premium User"
+    "message": "Premium active"
   },
   "trialStatus": {
     "message": "Trial: $DAYS$ days left",
@@ -40,11 +51,19 @@
       }
     }
   },
+  "trialStatusOneDay": {
+    "message": "Trial: $DAYS$ day left",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
   "freeStatus": {
-    "message": "Free Version (Trial Expired)"
+    "message": "Free version (trial ended)"
   },
   "buttonBuy": {
-    "message": "Upgrade to Premium ($3)"
+    "message": "Upgrade to Premium ($3 one-time)"
   },
   "buttonAddParam": {
     "message": "Add Rule"
@@ -53,9 +72,9 @@
     "message": "Custom rule"
   },
   "placeholderAddParam": {
-    "message": "param_name"
+    "message": "Parameter name"
   },
   "msgPremiumOnly": {
-    "message": "Premium only feature"
+    "message": "Premium is required for custom rules."
   }
 }
