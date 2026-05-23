@@ -2,18 +2,21 @@ import { cleanUrl, getTrackingParams } from './url-cleaner';
 
 async function init() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  const urlDisplay = document.getElementById('current-url');
+  const originalDisplay = document.getElementById('original-url');
+  const cleanedDisplay = document.getElementById('cleaned-url');
   const copyBtn = document.getElementById('copy-btn');
   const status = document.getElementById('status');
 
   let cleanedUrl = '';
 
-  if (urlDisplay && tab?.url) {
+  if (tab?.url) {
+    if (originalDisplay) originalDisplay.textContent = tab.url;
     const params = await getTrackingParams();
     cleanedUrl = cleanUrl(tab.url, params);
-    urlDisplay.textContent = cleanedUrl;
-  } else if (urlDisplay) {
-    urlDisplay.textContent = 'URL not found';
+    if (cleanedDisplay) cleanedDisplay.textContent = cleanedUrl;
+  } else {
+    if (originalDisplay) originalDisplay.textContent = 'URL not found';
+    if (cleanedDisplay) cleanedDisplay.textContent = 'URL not found';
   }
 
   if (copyBtn && cleanedUrl) {
