@@ -28,5 +28,26 @@
   },
   "statusError": {
     "message": "Error occurred"
+  },
+  "premiumStatus": {
+    "message": "Premium User"
+  },
+  "trialStatus": {
+    "message": "Trial: $DAYS$ days left"
+  },
+  "freeStatus": {
+    "message": "Free Version (Trial Expired)"
+  },
+  "buttonBuy": {
+    "message": "Upgrade to Premium ($3)"
+  },
+  "buttonAddParam": {
+    "message": "Add Rule"
+  },
+  "placeholderAddParam": {
+    "message": "param_name"
+  },
+  "msgPremiumOnly": {
+    "message": "Premium only feature"
   }
 }

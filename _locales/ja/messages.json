@@ -28,5 +28,26 @@
   },
   "statusError": {
     "message": "エラーが発生しました"
+  },
+  "premiumStatus": {
+    "message": "プレミアムユーザー"
+  },
+  "trialStatus": {
+    "message": "試用期間: あと$DAYS$日"
+  },
+  "freeStatus": {
+    "message": "無料版 (試用期間終了)"
+  },
+  "buttonBuy": {
+    "message": "プレミアムにアップグレード ($3)"
+  },
+  "buttonAddParam": {
+    "message": "ルール追加"
+  },
+  "placeholderAddParam": {
+    "message": "パラメータ名"
+  },
+  "msgPremiumOnly": {
+    "message": "プレミアム限定機能です"
   }
 }
