@@ -1,0 +1,11 @@
+# link-cleaner TODO (細粒度)
+- [ ] T001: src/popup.ts で chrome.tabs から現在タブURLを取得しpopupに表示するだけ
+- [ ] T002: URLから追跡パラメータ(utm_*, fbclid, gclid, ref等)を除去する関数を実装し除去後URLを表示
+- [ ] T003: 「コピー」ボタンで除去後URLをクリップボードにコピー
+- [ ] T004: 除去対象パラメータ一覧をstorage.localで管理(既定+ユーザー追加)
+- [ ] T005: 除去前/除去後を見比べ表示
+- [ ] T006: _locales ja/en を chrome.i18n で全UIに適用
+- [ ] T007: Premiumゲート(trial_start_ts+Stripe)。無料は既定リスト、Premiumでカスタムルール保存
+- [ ] T008: npm run build を通しts/lintを解消
+- [ ] T009: release/link-cleaner.zip 生成(node_modules除外)
+- [ ] T010: legal/PRIVACY.md と TERMS.md(外部通信なし・データ収集なし・$3買い切り7日トライアル明記)
