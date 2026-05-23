@@ -5,6 +5,7 @@ import {
   getTrackingParams,
   saveCustomParam
 } from './storage/link-cleaner-storage';
+import { chromeLocalStorageAdapter } from './storage/chrome-local-storage-adapter';
 
 async function init() {
   translateUI();
@@ -15,7 +16,7 @@ async function init() {
   const cleanedDisplay = document.getElementById('cleaned-url');
   const copyBtn = document.getElementById('copy-btn') as HTMLButtonElement | null;
   const statusDisplay = document.getElementById('status');
-  
+
   const subStatusDisplay = document.getElementById('subscription-status');
   const buyBtn = document.getElementById('buy-btn') as HTMLButtonElement | null;
   const addParamBtn = document.getElementById('add-param-btn') as HTMLButtonElement | null;
@@ -34,7 +35,7 @@ async function init() {
   };
 
   const refreshUrl = async () => {
-    const params = tab?.url ? await getTrackingParams() : [];
+    const params = tab?.url ? await getTrackingParams(chromeLocalStorageAdapter) : [];
     const viewModel = createUrlViewModel(tab?.url, params, chrome.i18n.getMessage('errorNotFound'));
     cleanedUrl = viewModel.cleanedUrl;
     if (originalDisplay) originalDisplay.textContent = viewModel.originalText;
@@ -42,7 +43,7 @@ async function init() {
   };
 
   const refreshSubscriptionUI = async () => {
-    const status = await getSubscriptionStatus();
+    const status = await getSubscriptionStatus(chromeLocalStorageAdapter);
     const viewModel = createSubscriptionViewModel(status);
     if (subStatusDisplay) {
       subStatusDisplay.textContent = chrome.i18n.getMessage(viewModel.messageKey, viewModel.messageArgs);
@@ -78,7 +79,7 @@ async function init() {
   if (buyBtn) {
     buyBtn.addEventListener('click', async () => {
       buyBtn.textContent = '...';
-      await buyPremium();
+      await buyPremium(chromeLocalStorageAdapter);
       await refreshSubscriptionUI();
       await refreshUrl();
     });
@@ -88,7 +89,7 @@ async function init() {
     addParamBtn.addEventListener('click', async () => {
       const param = customParamInput.value.trim();
       if (param) {
-        const success = await saveCustomParam(param);
+        const success = await saveCustomParam(param, chromeLocalStorageAdapter);
         if (success) {
           customParamInput.value = '';
           await refreshUrl();

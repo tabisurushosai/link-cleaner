@@ -1,59 +1,63 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { TRIAL_PERIOD_MS } from './core/subscription';
-import { getSubscriptionStatus } from './storage/link-cleaner-storage';
+import { getSubscriptionStatus, type LinkCleanerStorageAdapter } from './storage/link-cleaner-storage';
 
-// Mock chrome API
-const chromeMock = {
-  storage: {
-    local: {
-      get: vi.fn(),
-      set: vi.fn(),
+interface MemoryStorageState {
+  isPremium?: boolean;
+  trialStartTs?: number;
+  customParams?: string[];
+}
+
+function createMemoryStorage(initial: MemoryStorageState = {}) {
+  const state: MemoryStorageState = { ...initial };
+  const adapter: LinkCleanerStorageAdapter = {
+    async readSubscriptionState() {
+      return {
+        isPremium: state.isPremium,
+        trialStartTs: state.trialStartTs
+      };
     },
-  },
-};
+    async writeTrialStartTs(trialStartTs) {
+      state.trialStartTs = trialStartTs;
+    },
+    async readCustomParams() {
+      return state.customParams;
+    },
+    async writeCustomParams(customParams) {
+      state.customParams = customParams;
+    },
+    async writePremiumState(isPremium) {
+      state.isPremium = isPremium;
+    }
+  };
 
-vi.stubGlobal('chrome', chromeMock);
+  return { adapter, state };
+}
 
 describe('Subscription Logic', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   it('should initialize trial for new users', async () => {
-    chromeMock.storage.local.get.mockImplementation((keys, callback) => {
-      callback({});
-    });
-    chromeMock.storage.local.set.mockImplementation((data, callback) => {
-      if (callback) callback();
-    });
+    const { adapter, state } = createMemoryStorage();
 
-    const status = await getSubscriptionStatus();
-    
-    expect(chromeMock.storage.local.set).toHaveBeenCalledWith(
-      expect.objectContaining({ trialStartTs: expect.any(Number) }),
-      expect.any(Function)
-    );
+    const status = await getSubscriptionStatus(adapter);
+
+    expect(state.trialStartTs).toEqual(expect.any(Number));
     expect(status.isPremium).toBe(false);
     expect(status.isTrialActive).toBe(true);
     expect(status.trialDaysLeft).toBe(7);
   });
 
   it('should detect premium users', async () => {
-    chromeMock.storage.local.get.mockImplementation((keys, callback) => {
-      callback({ isPremium: true, trialStartTs: Date.now() });
-    });
+    const { adapter } = createMemoryStorage({ isPremium: true, trialStartTs: Date.now() });
 
-    const status = await getSubscriptionStatus();
+    const status = await getSubscriptionStatus(adapter);
     expect(status.isPremium).toBe(true);
   });
 
   it('should detect expired trial', async () => {
     const longAgo = Date.now() - (TRIAL_PERIOD_MS + 1000);
-    chromeMock.storage.local.get.mockImplementation((keys, callback) => {
-      callback({ isPremium: false, trialStartTs: longAgo });
-    });
+    const { adapter } = createMemoryStorage({ isPremium: false, trialStartTs: longAgo });
 
-    const status = await getSubscriptionStatus();
+    const status = await getSubscriptionStatus(adapter);
     expect(status.isTrialActive).toBe(false);
     expect(status.trialDaysLeft).toBe(0);
   });
