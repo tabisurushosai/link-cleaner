@@ -4,7 +4,7 @@
 - [x] T003: 「コピー」ボタンで除去後URLをクリップボードにコピー
 - [x] T004: 除去対象パラメータ一覧をstorage.localで管理(既定+ユーザー追加)
 - [x] T005: 除去前/除去後を見比べ表示
-- [ ] T006: _locales ja/en を chrome.i18n で全UIに適用
+- [x] T006: _locales ja/en を chrome.i18n で全UIに適用
 - [ ] T007: Premiumゲート(trial_start_ts+Stripe)。無料は既定リスト、Premiumでカスタムルール保存
 - [ ] T008: npm run build を通しts/lintを解消
 - [ ] T009: release/link-cleaner.zip 生成(node_modules除外)

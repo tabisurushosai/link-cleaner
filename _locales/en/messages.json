@@ -1,1 +1,32 @@
-{ "extName":{"message":"Clean Link"},"extDesc":{"message":"Copy the current URL with tracking parameters removed."} }
+{
+  "extName": {
+    "message": "Clean Link"
+  },
+  "extDesc": {
+    "message": "Copy the current URL with tracking parameters removed."
+  },
+  "appName": {
+    "message": "Clean Link"
+  },
+  "labelBefore": {
+    "message": "Original:"
+  },
+  "labelAfter": {
+    "message": "Cleaned:"
+  },
+  "buttonCopy": {
+    "message": "Copy"
+  },
+  "statusLoading": {
+    "message": "Loading..."
+  },
+  "errorNotFound": {
+    "message": "URL not found"
+  },
+  "statusCopied": {
+    "message": "Copied!"
+  },
+  "statusError": {
+    "message": "Error occurred"
+  }
+}

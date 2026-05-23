@@ -1,6 +1,7 @@
 import { cleanUrl, getTrackingParams } from './url-cleaner';
 
 async function init() {
+  translateUI();
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   const originalDisplay = document.getElementById('original-url');
   const cleanedDisplay = document.getElementById('cleaned-url');
@@ -15,8 +16,9 @@ async function init() {
     cleanedUrl = cleanUrl(tab.url, params);
     if (cleanedDisplay) cleanedDisplay.textContent = cleanedUrl;
   } else {
-    if (originalDisplay) originalDisplay.textContent = 'URL not found';
-    if (cleanedDisplay) cleanedDisplay.textContent = 'URL not found';
+    const errorMsg = chrome.i18n.getMessage('errorNotFound');
+    if (originalDisplay) originalDisplay.textContent = errorMsg;
+    if (cleanedDisplay) cleanedDisplay.textContent = errorMsg;
   }
 
   if (copyBtn && cleanedUrl) {
@@ -24,14 +26,14 @@ async function init() {
       try {
         await navigator.clipboard.writeText(cleanedUrl);
         if (status) {
-          status.textContent = 'コピーしました！';
+          status.textContent = chrome.i18n.getMessage('statusCopied');
           setTimeout(() => {
             status.textContent = '';
           }, 2000);
         }
       } catch (err) {
         if (status) {
-          status.textContent = 'エラーが発生しました';
+          status.textContent = chrome.i18n.getMessage('statusError');
           status.style.color = 'red';
         }
       }
@@ -39,6 +41,19 @@ async function init() {
   } else if (copyBtn) {
     (copyBtn as HTMLButtonElement).disabled = true;
   }
+}
+
+function translateUI() {
+  const elements = document.querySelectorAll('[data-i18n]');
+  elements.forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (key) {
+      const message = chrome.i18n.getMessage(key);
+      if (message) {
+        el.textContent = message;
+      }
+    }
+  });
 }
 
 init();

@@ -1,1 +1,32 @@
-{ "extName":{"message":"すっきりリンク"},"extDesc":{"message":"今のページのURLから追跡パラメータ(utm_等)を取り除いてコピー。共有がきれいに。"} }
+{
+  "extName": {
+    "message": "すっきりリンク"
+  },
+  "extDesc": {
+    "message": "今のページのURLから追跡パラメータ(utm_等)を取り除いてコピー。共有がきれいに。"
+  },
+  "appName": {
+    "message": "すっきりリンク"
+  },
+  "labelBefore": {
+    "message": "除去前:"
+  },
+  "labelAfter": {
+    "message": "除去後:"
+  },
+  "buttonCopy": {
+    "message": "コピー"
+  },
+  "statusLoading": {
+    "message": "読み込み中..."
+  },
+  "errorNotFound": {
+    "message": "URLが見つかりません"
+  },
+  "statusCopied": {
+    "message": "コピーしました！"
+  },
+  "statusError": {
+    "message": "エラーが発生しました"
+  }
+}
