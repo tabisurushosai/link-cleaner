@@ -1,7 +1,7 @@
 # link-cleaner TODO (細粒度)
 - [x] T001: src/popup.ts で chrome.tabs から現在タブURLを取得しpopupに表示するだけ
 - [x] T002: URLから追跡パラメータ(utm_*, fbclid, gclid, ref等)を除去する関数を実装し除去後URLを表示
-- [ ] T003: 「コピー」ボタンで除去後URLをクリップボードにコピー
+- [x] T003: 「コピー」ボタンで除去後URLをクリップボードにコピー
 - [ ] T004: 除去対象パラメータ一覧をstorage.localで管理(既定+ユーザー追加)
 - [ ] T005: 除去前/除去後を見比べ表示
 - [ ] T006: _locales ja/en を chrome.i18n で全UIに適用
