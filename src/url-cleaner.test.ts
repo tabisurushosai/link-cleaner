@@ -36,4 +36,11 @@ describe('cleanUrl', () => {
     const input = 'not-a-url';
     expect(cleanUrl(input)).toBe(input);
   });
+
+  it('should remove custom parameters if provided', () => {
+    const input = 'https://example.com/page?custom_id=123&keep_me=true';
+    const params = ['custom_id'];
+    const expected = 'https://example.com/page?keep_me=true';
+    expect(cleanUrl(input, params)).toBe(expected);
+  });
 });

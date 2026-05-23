@@ -1,4 +1,4 @@
-import { cleanUrl } from './url-cleaner';
+import { cleanUrl, getTrackingParams } from './url-cleaner';
 
 async function init() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -9,7 +9,8 @@ async function init() {
   let cleanedUrl = '';
 
   if (urlDisplay && tab?.url) {
-    cleanedUrl = cleanUrl(tab.url);
+    const params = await getTrackingParams();
+    cleanedUrl = cleanUrl(tab.url, params);
     urlDisplay.textContent = cleanedUrl;
   } else if (urlDisplay) {
     urlDisplay.textContent = 'URL not found';
