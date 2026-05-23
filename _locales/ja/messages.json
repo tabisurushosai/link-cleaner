@@ -3,37 +3,56 @@
     "message": "すっきりリンク"
   },
   "extDesc": {
-    "message": "今のページのURLから追跡パラメータ(utm_等)を取り除いてコピー。共有がきれいに。"
+    "message": "現在のページのURLから追跡パラメータ（utm_ など）を取り除いてコピーします。共有するリンクをすっきり保てます。"
   },
   "appName": {
     "message": "すっきりリンク"
   },
   "labelBefore": {
-    "message": "除去前:"
+    "message": "除去前："
   },
   "labelAfter": {
-    "message": "除去後:"
+    "message": "除去後："
   },
   "buttonCopy": {
     "message": "コピー"
   },
   "statusLoading": {
-    "message": "読み込み中..."
+    "message": "読み込み中…"
   },
   "errorNotFound": {
-    "message": "URLが見つかりません"
+    "message": "URLが見つかりません。"
   },
   "statusCopied": {
-    "message": "コピーしました！"
+    "message": "コピーしました。"
   },
   "statusError": {
-    "message": "エラーが発生しました"
+    "message": "エラーが発生しました。"
+  },
+  "statusProcessing": {
+    "message": "処理中…"
+  },
+  "statusRuleAdded": {
+    "message": "追加しました：$PARAM$",
+    "placeholders": {
+      "param": {
+        "content": "$1"
+      }
+    }
   },
   "premiumStatus": {
-    "message": "プレミアムユーザー"
+    "message": "プレミアム有効"
   },
   "trialStatus": {
-    "message": "試用期間: あと$DAYS$日",
+    "message": "試用期間：残り $DAYS$ 日",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
+  },
+  "trialStatusOneDay": {
+    "message": "試用期間：残り $DAYS$ 日",
     "placeholders": {
       "days": {
         "content": "$1"
@@ -41,21 +60,21 @@
     }
   },
   "freeStatus": {
-    "message": "無料版 (試用期間終了)"
+    "message": "無料版（試用期間終了）"
   },
   "buttonBuy": {
-    "message": "プレミアムにアップグレード ($3)"
+    "message": "プレミアムにアップグレード（$3買い切り）"
   },
   "buttonAddParam": {
-    "message": "ルール追加"
+    "message": "ルールを追加"
   },
   "customParamLabel": {
     "message": "カスタムルール"
   },
   "placeholderAddParam": {
-    "message": "パラメータ名"
+    "message": "例：ref"
   },
   "msgPremiumOnly": {
-    "message": "プレミアム限定機能です"
+    "message": "プレミアム限定機能です。"
   }
 }

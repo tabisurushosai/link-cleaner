@@ -8,7 +8,7 @@ export interface UrlViewModel {
   canCopy: boolean;
 }
 
-export type SubscriptionMessageKey = 'premiumStatus' | 'trialStatus' | 'freeStatus';
+export type SubscriptionMessageKey = 'premiumStatus' | 'trialStatus' | 'trialStatusOneDay' | 'freeStatus';
 
 export interface SubscriptionViewModel {
   messageKey: SubscriptionMessageKey;
@@ -53,7 +53,7 @@ export function createSubscriptionViewModel(status: SubscriptionStatus): Subscri
 
   if (status.isTrialActive) {
     return {
-      messageKey: 'trialStatus',
+      messageKey: status.trialDaysLeft === 1 ? 'trialStatusOneDay' : 'trialStatus',
       messageArgs: [status.trialDaysLeft.toString()],
       showBuyButton: true,
       canEditCustomParams

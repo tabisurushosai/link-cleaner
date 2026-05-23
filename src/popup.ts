@@ -8,8 +8,11 @@ import {
 import { chromeLocalStorageAdapter } from './storage/chrome-local-storage-adapter';
 
 async function init() {
+  const uiLanguage = chrome.i18n.getUILanguage().toLowerCase().startsWith('en') ? 'en' : 'ja';
+  const numberFormatter = new Intl.NumberFormat(uiLanguage);
+
   translateUI();
-  document.documentElement.lang = chrome.i18n.getUILanguage().split('-')[0] || 'ja';
+  document.documentElement.lang = uiLanguage;
 
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   const originalDisplay = document.getElementById('original-url');
@@ -34,6 +37,14 @@ async function init() {
     setStatus('');
   };
 
+  const formatSubscriptionMessageArgs = (messageKey: string, args?: string[]) => {
+    if (!args) return undefined;
+    if (messageKey === 'trialStatus' || messageKey === 'trialStatusOneDay') {
+      return args.map(arg => numberFormatter.format(Number(arg)));
+    }
+    return args;
+  };
+
   const refreshUrl = async () => {
     const params = tab?.url ? await getTrackingParams(chromeLocalStorageAdapter) : [];
     const viewModel = createUrlViewModel(tab?.url, params, chrome.i18n.getMessage('errorNotFound'));
@@ -46,7 +57,10 @@ async function init() {
     const status = await getSubscriptionStatus(chromeLocalStorageAdapter);
     const viewModel = createSubscriptionViewModel(status);
     if (subStatusDisplay) {
-      subStatusDisplay.textContent = chrome.i18n.getMessage(viewModel.messageKey, viewModel.messageArgs);
+      subStatusDisplay.textContent = chrome.i18n.getMessage(
+        viewModel.messageKey,
+        formatSubscriptionMessageArgs(viewModel.messageKey, viewModel.messageArgs)
+      );
     }
     if (buyBtn) buyBtn.hidden = !viewModel.showBuyButton;
 
@@ -78,7 +92,7 @@ async function init() {
 
   if (buyBtn) {
     buyBtn.addEventListener('click', async () => {
-      buyBtn.textContent = '...';
+      buyBtn.textContent = chrome.i18n.getMessage('statusProcessing');
       await buyPremium(chromeLocalStorageAdapter);
       await refreshSubscriptionUI();
       await refreshUrl();
@@ -93,7 +107,7 @@ async function init() {
         if (success) {
           customParamInput.value = '';
           await refreshUrl();
-          setStatus('Added: ' + param);
+          setStatus(chrome.i18n.getMessage('statusRuleAdded', param));
           setTimeout(clearStatus, 2000);
         } else {
           setStatus(chrome.i18n.getMessage('msgPremiumOnly'), true);
