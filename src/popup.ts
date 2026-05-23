@@ -8,18 +8,30 @@ import {
 
 async function init() {
   translateUI();
+  document.documentElement.lang = chrome.i18n.getUILanguage().split('-')[0] || 'ja';
+
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   const originalDisplay = document.getElementById('original-url');
   const cleanedDisplay = document.getElementById('cleaned-url');
-  const copyBtn = document.getElementById('copy-btn');
+  const copyBtn = document.getElementById('copy-btn') as HTMLButtonElement | null;
   const statusDisplay = document.getElementById('status');
   
   const subStatusDisplay = document.getElementById('subscription-status');
-  const buyBtn = document.getElementById('buy-btn');
-  const addParamBtn = document.getElementById('add-param-btn');
-  const customParamInput = document.getElementById('custom-param-input') as HTMLInputElement;
+  const buyBtn = document.getElementById('buy-btn') as HTMLButtonElement | null;
+  const addParamBtn = document.getElementById('add-param-btn') as HTMLButtonElement | null;
+  const customParamInput = document.getElementById('custom-param-input') as HTMLInputElement | null;
 
   let cleanedUrl = '';
+
+  const setStatus = (message: string, isError = false) => {
+    if (!statusDisplay) return;
+    statusDisplay.textContent = message;
+    statusDisplay.classList.toggle('is-error', isError);
+  };
+
+  const clearStatus = () => {
+    setStatus('');
+  };
 
   const refreshUrl = async () => {
     const params = tab?.url ? await getTrackingParams() : [];
@@ -35,13 +47,13 @@ async function init() {
     if (subStatusDisplay) {
       subStatusDisplay.textContent = chrome.i18n.getMessage(viewModel.messageKey, viewModel.messageArgs);
     }
-    if (buyBtn) buyBtn.style.display = viewModel.showBuyButton ? 'block' : 'none';
+    if (buyBtn) buyBtn.hidden = !viewModel.showBuyButton;
 
     if (!viewModel.canEditCustomParams) {
-      if (addParamBtn) (addParamBtn as HTMLButtonElement).disabled = true;
+      if (addParamBtn) addParamBtn.disabled = true;
       if (customParamInput) customParamInput.disabled = true;
     } else {
-      if (addParamBtn) (addParamBtn as HTMLButtonElement).disabled = false;
+      if (addParamBtn) addParamBtn.disabled = false;
       if (customParamInput) customParamInput.disabled = false;
     }
   };
@@ -53,21 +65,14 @@ async function init() {
     copyBtn.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(cleanedUrl);
-        if (statusDisplay) {
-          statusDisplay.textContent = chrome.i18n.getMessage('statusCopied');
-          setTimeout(() => {
-            statusDisplay.textContent = '';
-          }, 2000);
-        }
+        setStatus(chrome.i18n.getMessage('statusCopied'));
+        setTimeout(clearStatus, 2000);
       } catch (err) {
-        if (statusDisplay) {
-          statusDisplay.textContent = chrome.i18n.getMessage('statusError');
-          statusDisplay.style.color = 'red';
-        }
+        setStatus(chrome.i18n.getMessage('statusError'), true);
       }
     });
   } else if (copyBtn) {
-    (copyBtn as HTMLButtonElement).disabled = true;
+    copyBtn.disabled = true;
   }
 
   if (buyBtn) {
@@ -87,16 +92,18 @@ async function init() {
         if (success) {
           customParamInput.value = '';
           await refreshUrl();
-          if (statusDisplay) {
-            statusDisplay.textContent = 'Added: ' + param;
-            setTimeout(() => { statusDisplay.textContent = ''; }, 2000);
-          }
+          setStatus('Added: ' + param);
+          setTimeout(clearStatus, 2000);
         } else {
-          if (statusDisplay) {
-            statusDisplay.textContent = chrome.i18n.getMessage('msgPremiumOnly');
-            statusDisplay.style.color = 'red';
-          }
+          setStatus(chrome.i18n.getMessage('msgPremiumOnly'), true);
         }
+      }
+    });
+
+    customParamInput.addEventListener('keydown', event => {
+      if (event.key === 'Enter' && !addParamBtn.disabled) {
+        event.preventDefault();
+        addParamBtn.click();
       }
     });
   }

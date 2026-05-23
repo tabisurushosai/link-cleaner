@@ -49,6 +49,9 @@
   "buttonAddParam": {
     "message": "Add Rule"
   },
+  "customParamLabel": {
+    "message": "Custom rule"
+  },
   "placeholderAddParam": {
     "message": "param_name"
   },

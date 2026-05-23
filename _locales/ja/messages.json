@@ -49,6 +49,9 @@
   "buttonAddParam": {
     "message": "ルール追加"
   },
+  "customParamLabel": {
+    "message": "カスタムルール"
+  },
   "placeholderAddParam": {
     "message": "パラメータ名"
   },

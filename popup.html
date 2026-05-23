@@ -1,24 +1,210 @@
-<!doctype html><html><head><meta charset="utf-8"></head><body style="width:320px;font-family:system-ui;padding:10px"><h3 data-i18n="appName">すっきりリンク</h3><div id="app">
-  <div style="margin-bottom: 8px;">
-    <div data-i18n="labelBefore" style="font-size: 10px; color: #999; margin-bottom: 2px;">除去前:</div>
-    <div style="font-size: 11px; color: #666; word-break: break-all; text-decoration: line-through; opacity: 0.7;" id="original-url" data-i18n="statusLoading">Loading...</div>
-  </div>
-  <div style="margin-bottom: 8px;">
-    <div data-i18n="labelAfter" style="font-size: 10px; color: #999; margin-bottom: 2px;">除去後:</div>
-    <div style="font-size: 12px; color: #333; word-break: break-all; font-weight: bold;" id="cleaned-url" data-i18n="statusLoading">Loading...</div>
-  </div>
-  <button id="copy-btn" data-i18n="buttonCopy" style="margin-top: 10px; width: 100%; padding: 8px; cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 4px;">コピー</button>
-  <div id="status" style="font-size: 10px; color: green; margin-top: 4px; height: 1em;"></div>
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #ffffff;
+      --text: #1f2937;
+      --muted: #4b5563;
+      --border: #6b7280;
+      --border-subtle: #e5e7eb;
+      --primary: #0b5ed7;
+      --premium: #146c43;
+      --focus: #111827;
+      --success: #0f766e;
+      --error: #b91c1c;
+      --control-bg: #f8f9fa;
+    }
 
-  <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+    * {
+      box-sizing: border-box;
+    }
 
-  <div id="premium-section" style="font-size: 11px;">
-    <div id="subscription-status" style="color: #666; margin-bottom: 8px;"></div>
-    <button id="buy-btn" data-i18n="buttonBuy" style="display:none; width: 100%; padding: 6px; cursor: pointer; background-color: #28a745; color: white; border: none; border-radius: 4px; margin-bottom: 8px;">Upgrade</button>
-    
-    <div style="display: flex; gap: 4px;">
-      <input type="text" id="custom-param-input" style="flex: 1; padding: 4px; font-size: 11px; border: 1px solid #ccc; border-radius: 4px;" data-i18n-placeholder="placeholderAddParam">
-      <button id="add-param-btn" data-i18n="buttonAddParam" style="padding: 4px 8px; cursor: pointer; font-size: 11px; border: 1px solid #ccc; background: #f8f9fa; border-radius: 4px;">Add</button>
+    body {
+      width: 320px;
+      margin: 0;
+      padding: 14px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .url-section {
+      margin-bottom: 10px;
+    }
+
+    .url-label,
+    .field-label {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .url-value {
+      min-height: 2.8em;
+      padding: 8px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      background: #f9fafb;
+      color: var(--text);
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    #original-url {
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+
+    #cleaned-url {
+      font-weight: 700;
+    }
+
+    button,
+    input {
+      min-height: 44px;
+      font: inherit;
+    }
+
+    button {
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    button:disabled,
+    input:disabled {
+      cursor: not-allowed;
+      opacity: 0.65;
+    }
+
+    .primary-button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border: 0;
+      background: var(--primary);
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .premium-button {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px 12px;
+      border: 0;
+      background: var(--premium);
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .add-button {
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      background: var(--control-bg);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .status-message {
+      min-height: 1.4em;
+      margin-top: 8px;
+      color: var(--success);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-message.is-error {
+      color: var(--error);
+    }
+
+    .divider {
+      margin: 16px 0;
+      border: 0;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    #premium-section {
+      font-size: 12px;
+    }
+
+    #subscription-status {
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .param-controls {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    #custom-param-input {
+      flex: 1 1 auto;
+      min-width: 0;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+    }
+
+    @media (prefers-contrast: more) {
+      button:focus-visible,
+      input:focus-visible {
+        outline-color: #000000;
+      }
+    }
+  </style>
+</head>
+<body>
+<main id="app" aria-labelledby="app-title">
+  <h1 id="app-title" data-i18n="appName">すっきりリンク</h1>
+
+  <section class="url-section" aria-labelledby="original-url-label">
+    <div id="original-url-label" class="url-label" data-i18n="labelBefore">除去前:</div>
+    <div id="original-url" class="url-value" data-i18n="statusLoading">Loading...</div>
+  </section>
+
+  <section class="url-section" aria-labelledby="cleaned-url-label">
+    <div id="cleaned-url-label" class="url-label" data-i18n="labelAfter">除去後:</div>
+    <div id="cleaned-url" class="url-value" data-i18n="statusLoading">Loading...</div>
+  </section>
+
+  <button id="copy-btn" class="primary-button" type="button" data-i18n="buttonCopy" aria-controls="cleaned-url">コピー</button>
+  <div id="status" class="status-message" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <hr class="divider">
+
+  <section id="premium-section" aria-labelledby="custom-param-label">
+    <div id="subscription-status" role="status" aria-live="polite" aria-atomic="true"></div>
+    <button id="buy-btn" class="premium-button" type="button" data-i18n="buttonBuy" hidden>Upgrade</button>
+
+    <label id="custom-param-label" class="field-label" for="custom-param-input" data-i18n="customParamLabel">カスタムルール</label>
+    <div class="param-controls">
+      <input type="text" id="custom-param-input" autocomplete="off" data-i18n-placeholder="placeholderAddParam" aria-describedby="subscription-status">
+      <button id="add-param-btn" class="add-button" type="button" data-i18n="buttonAddParam">Add</button>
     </div>
-  </div>
-</div><script type="module" src="/src/popup.ts"></script></body></html>
+  </section>
+</main>
+<script type="module" src="/src/popup.ts"></script>
+</body>
+</html>
