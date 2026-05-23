@@ -4,85 +4,54 @@ import {
   evaluateSubscriptionState,
   getEffectiveTrackingParams
 } from '../core/subscription';
-
-type StorageValues = Record<string, unknown>;
-
-export interface LinkCleanerStorageAdapter {
-  get(keys: string[]): Promise<StorageValues>;
-  set(values: StorageValues): Promise<void>;
-}
-
-export const chromeLocalStorageAdapter: LinkCleanerStorageAdapter = {
-  get(keys) {
-    if (typeof chrome === 'undefined' || !chrome.storage) {
-      return Promise.resolve({});
-    }
-
-    return new Promise(resolve => {
-      chrome.storage.local.get(keys, result => resolve(result));
-    });
-  },
-  set(values) {
-    if (typeof chrome === 'undefined' || !chrome.storage) {
-      return Promise.resolve();
-    }
-
-    return new Promise(resolve => {
-      chrome.storage.local.set(values, () => resolve());
-    });
-  }
-};
+import type { LinkCleanerStorageAdapter } from './storage-adapter';
+export type { LinkCleanerStorageAdapter } from './storage-adapter';
 
 export async function getSubscriptionStatus(
-  storage: LinkCleanerStorageAdapter = chromeLocalStorageAdapter
+  storage: LinkCleanerStorageAdapter
 ): Promise<SubscriptionStatus> {
-  const result = await storage.get(['isPremium', 'trialStartTs']);
-  const evaluation = evaluateSubscriptionState({
-    isPremium: result.isPremium as boolean | undefined,
-    trialStartTs: result.trialStartTs as number | undefined
-  });
+  const result = await storage.readSubscriptionState();
+  const evaluation = evaluateSubscriptionState(result);
 
   if (evaluation.shouldPersistTrialStart) {
-    await storage.set({ trialStartTs: evaluation.trialStartTs });
+    await storage.writeTrialStartTs(evaluation.trialStartTs);
   }
 
   return evaluation.status;
 }
 
 export async function getTrackingParams(
-  storage: LinkCleanerStorageAdapter = chromeLocalStorageAdapter
+  storage: LinkCleanerStorageAdapter
 ): Promise<string[]> {
   const status = await getSubscriptionStatus(storage);
-  const result = await storage.get(['customParams']);
-  const customParams = Array.isArray(result.customParams) ? result.customParams as string[] : undefined;
+  const customParams = await storage.readCustomParams();
 
   return getEffectiveTrackingParams(customParams, status);
 }
 
 export async function saveCustomParam(
   param: string,
-  storage: LinkCleanerStorageAdapter = chromeLocalStorageAdapter
+  storage: LinkCleanerStorageAdapter
 ): Promise<boolean> {
   const status = await getSubscriptionStatus(storage);
   if (!canUseCustomParams(status)) {
     return false;
   }
 
-  const result = await storage.get(['customParams']);
-  const customParams = Array.isArray(result.customParams) ? result.customParams as string[] : [];
+  const customParams = await storage.readCustomParams() ?? [];
 
   if (!customParams.includes(param)) {
-    await storage.set({ customParams: [...customParams, param] });
+    await storage.writeCustomParams([...customParams, param]);
   }
 
   return true;
 }
 
 export async function buyPremium(
-  storage: LinkCleanerStorageAdapter = chromeLocalStorageAdapter
+  storage: LinkCleanerStorageAdapter
 ): Promise<void> {
   await new Promise<void>(resolve => {
     setTimeout(() => resolve(), 1000);
   });
-  await storage.set({ isPremium: true });
+  await storage.writePremiumState(true);
 }
