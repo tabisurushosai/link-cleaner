@@ -8,6 +8,24 @@
   "appName": {
     "message": "すっきりリンク"
   },
+  "keyboardHelp": {
+    "message": "Tabキーで項目を移動し、EnterまたはSpaceでボタンを実行できます。"
+  },
+  "originalUrlAriaLabel": {
+    "message": "除去前のURL"
+  },
+  "cleanedUrlAriaLabel": {
+    "message": "除去後のURL"
+  },
+  "copyCleanedUrlAriaLabel": {
+    "message": "除去後のURLをコピー"
+  },
+  "buyPremiumAriaLabel": {
+    "message": "プレミアムにアップグレード"
+  },
+  "addCustomRuleAriaLabel": {
+    "message": "カスタムルールを追加"
+  },
   "labelBefore": {
     "message": "除去前："
   },

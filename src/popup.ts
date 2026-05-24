@@ -31,6 +31,13 @@ async function init() {
     if (!statusDisplay) return;
     statusDisplay.textContent = message;
     statusDisplay.classList.toggle('is-error', isError);
+    statusDisplay.setAttribute('aria-live', isError ? 'assertive' : 'polite');
+  };
+
+  const setDisabled = (element: HTMLButtonElement | HTMLInputElement | null, disabled: boolean) => {
+    if (!element) return;
+    element.disabled = disabled;
+    element.setAttribute('aria-disabled', String(disabled));
   };
 
   const clearStatus = () => {
@@ -65,11 +72,11 @@ async function init() {
     if (buyBtn) buyBtn.hidden = !viewModel.showBuyButton;
 
     if (!viewModel.canEditCustomParams) {
-      if (addParamBtn) addParamBtn.disabled = true;
-      if (customParamInput) customParamInput.disabled = true;
+      setDisabled(addParamBtn, true);
+      setDisabled(customParamInput, true);
     } else {
-      if (addParamBtn) addParamBtn.disabled = false;
-      if (customParamInput) customParamInput.disabled = false;
+      setDisabled(addParamBtn, false);
+      setDisabled(customParamInput, false);
     }
   };
 
@@ -77,6 +84,7 @@ async function init() {
   await refreshSubscriptionUI();
 
   if (copyBtn && cleanedUrl) {
+    setDisabled(copyBtn, false);
     copyBtn.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(cleanedUrl);
@@ -87,15 +95,26 @@ async function init() {
       }
     });
   } else if (copyBtn) {
-    copyBtn.disabled = true;
+    setDisabled(copyBtn, true);
   }
 
   if (buyBtn) {
     buyBtn.addEventListener('click', async () => {
+      const buyButtonText = chrome.i18n.getMessage('buttonBuy');
+      setDisabled(buyBtn, true);
+      buyBtn.setAttribute('aria-busy', 'true');
       buyBtn.textContent = chrome.i18n.getMessage('statusProcessing');
-      await buyPremium(chromeLocalStorageAdapter);
-      await refreshSubscriptionUI();
-      await refreshUrl();
+      try {
+        await buyPremium(chromeLocalStorageAdapter);
+        await refreshSubscriptionUI();
+        await refreshUrl();
+      } finally {
+        buyBtn.removeAttribute('aria-busy');
+        if (!buyBtn.hidden) {
+          buyBtn.textContent = buyButtonText;
+          setDisabled(buyBtn, false);
+        }
+      }
     });
   }
 
@@ -125,6 +144,12 @@ async function init() {
 }
 
 function translateUI() {
+  translateTextContent();
+  translateAttribute('[data-i18n-placeholder]', 'data-i18n-placeholder', 'placeholder');
+  translateAttribute('[data-i18n-aria-label]', 'data-i18n-aria-label', 'aria-label');
+}
+
+function translateTextContent() {
   const elements = document.querySelectorAll('[data-i18n]');
   elements.forEach(el => {
     const key = el.getAttribute('data-i18n');
@@ -135,14 +160,16 @@ function translateUI() {
       }
     }
   });
+}
 
-  const placeholders = document.querySelectorAll('[data-i18n-placeholder]');
-  placeholders.forEach(el => {
-    const key = el.getAttribute('data-i18n-placeholder');
+function translateAttribute(selector: string, keyAttribute: string, targetAttribute: string) {
+  const elements = document.querySelectorAll(selector);
+  elements.forEach(el => {
+    const key = el.getAttribute(keyAttribute);
     if (key) {
       const message = chrome.i18n.getMessage(key);
       if (message) {
-        (el as HTMLInputElement).placeholder = message;
+        el.setAttribute(targetAttribute, message);
       }
     }
   });

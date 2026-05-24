@@ -54,12 +54,13 @@
 
     .url-value {
       min-height: 2.8em;
-      padding: 8px;
+      padding: 10px;
       border: 1px solid var(--border-subtle);
       border-radius: 6px;
       background: #f9fafb;
       color: var(--text);
       font-size: 12px;
+      line-height: 1.5;
       overflow-wrap: anywhere;
     }
 
@@ -75,16 +76,19 @@
     button,
     input {
       min-height: 44px;
+      min-width: 44px;
       font: inherit;
     }
 
     button {
       border-radius: 6px;
       cursor: pointer;
+      touch-action: manipulation;
     }
 
     button:focus-visible,
-    input:focus-visible {
+    input:focus-visible,
+    .url-value:focus-visible {
       outline: 3px solid var(--focus);
       outline-offset: 2px;
     }
@@ -136,6 +140,18 @@
       color: var(--error);
     }
 
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     .divider {
       margin: 16px 0;
       border: 0;
@@ -178,30 +194,31 @@
 <body>
 <main id="app" aria-labelledby="app-title">
   <h1 id="app-title" data-i18n="appName">すっきりリンク</h1>
+  <p id="keyboard-help" class="visually-hidden" data-i18n="keyboardHelp">Tabキーで項目を移動し、EnterまたはSpaceでボタンを実行できます。</p>
 
   <section class="url-section" aria-labelledby="original-url-label">
     <div id="original-url-label" class="url-label" data-i18n="labelBefore">除去前：</div>
-    <div id="original-url" class="url-value" data-i18n="statusLoading">読み込み中…</div>
+    <div id="original-url" class="url-value" role="textbox" aria-readonly="true" tabindex="0" data-i18n="statusLoading" data-i18n-aria-label="originalUrlAriaLabel">読み込み中…</div>
   </section>
 
   <section class="url-section" aria-labelledby="cleaned-url-label">
     <div id="cleaned-url-label" class="url-label" data-i18n="labelAfter">除去後：</div>
-    <div id="cleaned-url" class="url-value" data-i18n="statusLoading">読み込み中…</div>
+    <div id="cleaned-url" class="url-value" role="textbox" aria-readonly="true" tabindex="0" data-i18n="statusLoading" data-i18n-aria-label="cleanedUrlAriaLabel">読み込み中…</div>
   </section>
 
-  <button id="copy-btn" class="primary-button" type="button" data-i18n="buttonCopy" aria-controls="cleaned-url">コピー</button>
+  <button id="copy-btn" class="primary-button" type="button" data-i18n="buttonCopy" data-i18n-aria-label="copyCleanedUrlAriaLabel" aria-controls="cleaned-url" aria-describedby="keyboard-help status">コピー</button>
   <div id="status" class="status-message" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <hr class="divider">
 
   <section id="premium-section" aria-labelledby="custom-param-label">
     <div id="subscription-status" role="status" aria-live="polite" aria-atomic="true"></div>
-    <button id="buy-btn" class="premium-button" type="button" data-i18n="buttonBuy" hidden>プレミアムにアップグレード（$3買い切り）</button>
+    <button id="buy-btn" class="premium-button" type="button" data-i18n="buttonBuy" data-i18n-aria-label="buyPremiumAriaLabel" aria-describedby="subscription-status keyboard-help" hidden>プレミアムにアップグレード（$3買い切り）</button>
 
     <label id="custom-param-label" class="field-label" for="custom-param-input" data-i18n="customParamLabel">カスタムルール</label>
     <div class="param-controls">
-      <input type="text" id="custom-param-input" autocomplete="off" data-i18n-placeholder="placeholderAddParam" aria-describedby="subscription-status">
-      <button id="add-param-btn" class="add-button" type="button" data-i18n="buttonAddParam">ルールを追加</button>
+      <input type="text" id="custom-param-input" autocomplete="off" data-i18n-placeholder="placeholderAddParam" aria-describedby="subscription-status custom-param-label">
+      <button id="add-param-btn" class="add-button" type="button" data-i18n="buttonAddParam" data-i18n-aria-label="addCustomRuleAriaLabel" aria-describedby="subscription-status keyboard-help">ルールを追加</button>
     </div>
   </section>
 </main>
