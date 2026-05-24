@@ -59,7 +59,19 @@ async function init() {
     setStatus('');
   };
 
+  const setBusy = (element: HTMLElement | null, busy: boolean) => {
+    if (!element) return;
+    if (busy) {
+      element.setAttribute('aria-busy', 'true');
+    } else {
+      element.removeAttribute('aria-busy');
+    }
+  };
+
   const refreshUrl = async () => {
+    setBusy(originalDisplay, true);
+    setBusy(cleanedDisplay, true);
+
     const params = tab?.url ? await getTrackingParams(chromeLocalStorageAdapter) : [];
     const viewModel = createUrlViewModel(tab?.url, params, getMessage('errorNotFound'));
     cleanedUrl = viewModel.cleanedUrl;
@@ -67,12 +79,14 @@ async function init() {
       originalDisplay.textContent = viewModel.originalText;
       originalDisplay.classList.remove('is-loading');
       originalDisplay.classList.toggle('is-empty', Boolean(viewModel.emptyState));
+      setBusy(originalDisplay, false);
     }
     if (cleanedDisplay) {
       cleanedDisplay.textContent = viewModel.cleanedText;
       cleanedDisplay.classList.remove('is-loading');
       cleanedDisplay.classList.toggle('is-empty', Boolean(viewModel.emptyState));
       cleanedDisplay.classList.toggle('is-cleaned', viewModel.canCopy);
+      setBusy(cleanedDisplay, false);
     }
     if (emptyStateDisplay) {
       emptyStateDisplay.hidden = !viewModel.emptyState;

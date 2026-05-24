@@ -11,6 +11,9 @@
   "keyboardHelp": {
     "message": "Tabキーで項目を移動し、EnterキーまたはSpaceキーでボタンを実行できます。"
   },
+  "urlDisplayHelp": {
+    "message": "URL欄は読み取り専用です。コピーするにはコピーボタンを使います。"
+  },
   "onboardingTitle": {
     "message": "初めての方へ"
   },

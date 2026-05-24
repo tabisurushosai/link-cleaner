@@ -11,6 +11,9 @@
   "keyboardHelp": {
     "message": "Use Tab to move between items, and press Enter or Space to activate buttons."
   },
+  "urlDisplayHelp": {
+    "message": "URL fields are read-only. Use the Copy button to copy the cleaned link."
+  },
   "onboardingTitle": {
     "message": "First time here?"
   },

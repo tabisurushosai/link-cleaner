@@ -17,9 +17,9 @@
       --primary-soft: #dbeafe;
       --premium: #146c43;
       --focus: #111827;
-      --success: #0f766e;
+      --success: #0f5f59;
       --success-soft: #ccfbf1;
-      --error: #b91c1c;
+      --error: #991b1b;
       --error-soft: #fee2e2;
       --control-bg: #ffffff;
       --disabled-bg: #e2e8f0;
@@ -162,8 +162,8 @@
 
     button,
     input {
-      min-height: 44px;
-      min-width: 44px;
+      min-height: 48px;
+      min-width: 48px;
       font: inherit;
     }
 
@@ -178,6 +178,7 @@
     .url-value:focus-visible {
       outline: 3px solid var(--focus);
       outline-offset: 2px;
+      box-shadow: 0 0 0 5px #ffffff;
     }
 
     button:disabled,
@@ -288,8 +289,10 @@
 
     @media (prefers-contrast: more) {
       button:focus-visible,
-      input:focus-visible {
+      input:focus-visible,
+      .url-value:focus-visible {
         outline-color: #000000;
+        outline-width: 4px;
       }
     }
   </style>
@@ -298,6 +301,7 @@
 <main id="app" aria-labelledby="app-title">
   <h1 id="app-title" data-i18n="appName">すっきりリンク</h1>
   <p id="keyboard-help" class="visually-hidden" data-i18n="keyboardHelp">Tabキーで項目を移動し、EnterキーまたはSpaceキーでボタンを実行できます。</p>
+  <p id="url-display-help" class="visually-hidden" data-i18n="urlDisplayHelp">URL欄は読み取り専用です。コピーするにはコピー 버튼を使います。</p>
   <div id="onboarding-guide" class="guide-text" role="note" aria-labelledby="onboarding-guide-title">
     <strong id="onboarding-guide-title" class="guide-title" data-i18n="onboardingTitle">初めての方へ</strong>
     <span data-i18n="onboardingGuide">開いているページのURLから追跡パラメータを取り除き、コピーですぐ共有できます。</span>
@@ -310,12 +314,12 @@
 
   <section class="url-section" aria-labelledby="original-url-label">
     <div id="original-url-label" class="url-label" data-i18n="labelBefore">除去前：</div>
-    <div id="original-url" class="url-value is-loading" role="textbox" aria-readonly="true" tabindex="0" data-i18n="statusLoading" data-i18n-aria-label="originalUrlAriaLabel">読み込み中…</div>
+    <div id="original-url" class="url-value is-loading" role="textbox" aria-readonly="true" aria-busy="true" aria-describedby="url-display-help" tabindex="0" data-i18n="statusLoading" data-i18n-aria-label="originalUrlAriaLabel">読み込み中…</div>
   </section>
 
   <section class="url-section" aria-labelledby="cleaned-url-label">
     <div id="cleaned-url-label" class="url-label" data-i18n="labelAfter">除去後：</div>
-    <div id="cleaned-url" class="url-value is-loading" role="textbox" aria-readonly="true" tabindex="0" data-i18n="statusLoading" data-i18n-aria-label="cleanedUrlAriaLabel">読み込み中…</div>
+    <div id="cleaned-url" class="url-value is-loading" role="textbox" aria-readonly="true" aria-busy="true" aria-describedby="url-display-help" tabindex="0" data-i18n="statusLoading" data-i18n-aria-label="cleanedUrlAriaLabel">読み込み中…</div>
   </section>
 
   <button id="copy-btn" class="primary-button" type="button" data-i18n="buttonCopy" data-i18n-aria-label="copyCleanedUrlAriaLabel" aria-controls="cleaned-url" aria-describedby="onboarding-guide keyboard-help status">コピー</button>
