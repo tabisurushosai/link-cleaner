@@ -16,6 +16,9 @@
       --success: #0f766e;
       --error: #b91c1c;
       --control-bg: #f8f9fa;
+      --disabled-bg: #e5e7eb;
+      --disabled-text: #4b5563;
+      --disabled-border: #9ca3af;
     }
 
     * {
@@ -113,8 +116,11 @@
 
     button:disabled,
     input:disabled {
+      border-color: var(--disabled-border);
+      background: var(--disabled-bg);
+      color: var(--disabled-text);
       cursor: not-allowed;
-      opacity: 0.65;
+      opacity: 1;
     }
 
     .primary-button {
@@ -237,7 +243,7 @@
 
     <label id="custom-param-label" class="field-label" for="custom-param-input" data-i18n="customParamLabel">カスタムルール</label>
     <div class="param-controls">
-      <input type="text" id="custom-param-input" autocomplete="off" data-i18n-placeholder="placeholderAddParam" aria-describedby="subscription-status custom-param-label">
+      <input type="text" id="custom-param-input" autocomplete="off" data-i18n-placeholder="placeholderAddParam" aria-describedby="subscription-status custom-param-label keyboard-help">
       <button id="add-param-btn" class="add-button" type="button" data-i18n="buttonAddParam" data-i18n-aria-label="addCustomRuleAriaLabel" aria-describedby="subscription-status keyboard-help">ルールを追加</button>
     </div>
   </section>
