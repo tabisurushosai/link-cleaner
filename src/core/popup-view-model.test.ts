@@ -15,6 +15,27 @@ describe('popup view model', () => {
       cleanedUrl: 'https://example.com/page?q=keep',
       canCopy: true
     });
+    expect(viewModel.guidanceState).toBeUndefined();
+  });
+
+  it('adds guidance when the current URL has nothing to remove', () => {
+    const viewModel = createUrlViewModel(
+      'https://example.com/page?q=keep',
+      ['utm_source'],
+      'URL not found'
+    );
+
+    expect(viewModel).toEqual({
+      originalText: 'https://example.com/page?q=keep',
+      cleanedText: 'https://example.com/page?q=keep',
+      cleanedUrl: 'https://example.com/page?q=keep',
+      canCopy: true,
+      guidanceState: {
+        titleMessageKey: 'noTrackingTitle',
+        descriptionMessageKey: 'noTrackingDescription',
+        actionMessageKey: 'noTrackingAction'
+      }
+    });
   });
 
   it('exposes an empty state when the current URL is unavailable', () => {

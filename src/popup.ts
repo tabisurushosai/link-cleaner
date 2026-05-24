@@ -76,6 +76,7 @@ async function init() {
 
     const params = tab?.url ? await getTrackingParams(chromeLocalStorageAdapter) : [];
     const viewModel = createUrlViewModel(tab?.url, params, getMessage('errorNotFound'));
+    const urlGuidance = viewModel.emptyState ?? viewModel.guidanceState;
     cleanedUrl = viewModel.cleanedUrl;
     if (originalDisplay) {
       originalDisplay.textContent = viewModel.originalText;
@@ -91,21 +92,22 @@ async function init() {
       setBusy(cleanedDisplay, false);
     }
     if (emptyStateDisplay) {
-      emptyStateDisplay.hidden = !viewModel.emptyState;
+      emptyStateDisplay.hidden = !urlGuidance;
+      emptyStateDisplay.classList.toggle('is-info', Boolean(viewModel.guidanceState));
     }
     if (emptyStateTitle) {
-      emptyStateTitle.textContent = viewModel.emptyState
-        ? getMessage(viewModel.emptyState.titleMessageKey)
+      emptyStateTitle.textContent = urlGuidance
+        ? getMessage(urlGuidance.titleMessageKey)
         : '';
     }
     if (emptyStateDescription) {
-      emptyStateDescription.textContent = viewModel.emptyState
-        ? getMessage(viewModel.emptyState.descriptionMessageKey)
+      emptyStateDescription.textContent = urlGuidance
+        ? getMessage(urlGuidance.descriptionMessageKey)
         : '';
     }
     if (emptyStateAction) {
-      emptyStateAction.textContent = viewModel.emptyState
-        ? getMessage(viewModel.emptyState.actionMessageKey)
+      emptyStateAction.textContent = urlGuidance
+        ? getMessage(urlGuidance.actionMessageKey)
         : '';
     }
     setDisabled(copyBtn, !viewModel.canCopy);

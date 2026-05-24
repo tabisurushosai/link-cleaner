@@ -11,6 +11,11 @@ export interface UrlViewModel {
     descriptionMessageKey: 'emptyStateNoUrl';
     actionMessageKey: 'emptyStateOpenPageAction';
   };
+  guidanceState?: {
+    titleMessageKey: 'noTrackingTitle';
+    descriptionMessageKey: 'noTrackingDescription';
+    actionMessageKey: 'noTrackingAction';
+  };
 }
 
 export type SubscriptionMessageKey = 'premiumStatus' | 'trialStatus' | 'trialStatusOneDay' | 'freeStatus';
@@ -42,12 +47,22 @@ export function createUrlViewModel(
   }
 
   const cleanedUrl = cleanUrl(currentUrl, params);
-  return {
+  const viewModel: UrlViewModel = {
     originalText: currentUrl,
     cleanedText: cleanedUrl,
     cleanedUrl,
     canCopy: true
   };
+
+  if (cleanedUrl === currentUrl) {
+    viewModel.guidanceState = {
+      titleMessageKey: 'noTrackingTitle',
+      descriptionMessageKey: 'noTrackingDescription',
+      actionMessageKey: 'noTrackingAction'
+    };
+  }
+
+  return viewModel;
 }
 
 export function createSubscriptionViewModel(status: SubscriptionStatus): SubscriptionViewModel {
