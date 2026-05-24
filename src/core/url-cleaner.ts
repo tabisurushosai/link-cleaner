@@ -32,7 +32,7 @@ export function cleanUrl(urlStr: string, paramsToRemove: string[] = DEFAULT_PARA
     keysToDelete.forEach(key => url.searchParams.delete(key));
 
     return url.toString();
-  } catch (e) {
+  } catch {
     return urlStr;
   }
 }

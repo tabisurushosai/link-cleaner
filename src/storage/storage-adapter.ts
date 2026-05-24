@@ -1,6 +1,6 @@
-export interface LinkCleanerStoredValues {
-  isPremium?: boolean;
-  trialStartTs?: number;
+import type { StoredSubscriptionState } from '../core/subscription';
+
+export interface LinkCleanerStoredValues extends StoredSubscriptionState {
   customParams?: string[];
 }
 

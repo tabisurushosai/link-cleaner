@@ -8,6 +8,12 @@ describe('cleanUrl', () => {
     expect(cleanUrl(input)).toBe(expected);
   });
 
+  it('should remove any utm_* parameter even when it is not in the default list', () => {
+    const input = 'https://example.com/page?utm_custom=abc&q=search';
+    const expected = 'https://example.com/page?q=search';
+    expect(cleanUrl(input)).toBe(expected);
+  });
+
   it('should remove fbclid and gclid', () => {
     const input = 'https://example.com/page?fbclid=123&gclid=456&important=true';
     const expected = 'https://example.com/page?important=true';
