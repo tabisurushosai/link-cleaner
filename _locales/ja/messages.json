@@ -9,22 +9,22 @@
     "message": "すっきりリンク"
   },
   "keyboardHelp": {
-    "message": "Tabキーで項目を移動し、EnterキーまたはSpaceキーでボタンを実行できます。"
+    "message": "Tabキーで項目を移動し、Enterキーまたはスペースキーでボタンを実行できます。"
   },
   "urlDisplayHelp": {
-    "message": "URL欄は読み取り専用です。コピーするにはコピーボタンを使います。"
+    "message": "URL欄は読み取り専用です。コピーするにはコピー ボタンを使います。"
   },
   "onboardingTitle": {
     "message": "初めての方へ"
   },
   "onboardingGuide": {
-    "message": "開いているページのURLから追跡パラメータを取り除き、コピーですぐ共有できます。"
+    "message": "開いているページのURLから追跡パラメータを取り除き、共有しやすいリンクとしてコピーできます。"
   },
   "emptyStateTitle": {
     "message": "ページのURLが見つかりません"
   },
   "emptyStateNoUrl": {
-    "message": "Chromeの新しいタブ、設定画面、ストアなどではURLを取得できません。"
+    "message": "Chromeの新しいタブ、設定画面、Chrome ウェブストアなどではURLを取得できません。"
   },
   "emptyStateOpenPageAction": {
     "message": "通常のWebページを開いてから、もう一度すっきりリンクを開いてください。"
@@ -39,7 +39,7 @@
     "message": "除去後のURLをコピー"
   },
   "buyPremiumAriaLabel": {
-    "message": "プレミアムにアップグレード（$PRICE$・買い切り）",
+    "message": "プレミアムにアップグレード（$PRICE$の買い切り）",
     "placeholders": {
       "price": {
         "content": "$1"
@@ -65,10 +65,10 @@
     "message": "URLを取得できませんでした。"
   },
   "statusCopied": {
-    "message": "コピーしました。"
+    "message": "リンクをコピーしました。"
   },
   "statusError": {
-    "message": "処理中にエラーが発生しました。"
+    "message": "処理中にエラーが発生しました。もう一度お試しください。"
   },
   "statusProcessing": {
     "message": "処理中…"
@@ -82,10 +82,10 @@
     }
   },
   "premiumStatus": {
-    "message": "プレミアムは有効です"
+    "message": "プレミアムが有効です。"
   },
   "trialStatus": {
-    "message": "試用期間は残り $DAYS$ 日です",
+    "message": "試用期間は残り$DAYS$日です。",
     "placeholders": {
       "days": {
         "content": "$1"
@@ -93,7 +93,7 @@
     }
   },
   "trialStatusOneDay": {
-    "message": "試用期間は残り $DAYS$ 日です",
+    "message": "試用期間は残り$DAYS$日です。",
     "placeholders": {
       "days": {
         "content": "$1"
@@ -101,10 +101,10 @@
     }
   },
   "freeStatus": {
-    "message": "無料版（試用期間は終了しました）"
+    "message": "無料版（試用期間は終了）"
   },
   "buttonBuy": {
-    "message": "プレミアムにアップグレード（$PRICE$・買い切り）",
+    "message": "プレミアムにアップグレード（$PRICE$の買い切り）",
     "placeholders": {
       "price": {
         "content": "$1"

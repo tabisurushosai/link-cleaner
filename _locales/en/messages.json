@@ -9,22 +9,22 @@
     "message": "Link Cleaner"
   },
   "keyboardHelp": {
-    "message": "Use Tab to move between items, and press Enter or Space to activate buttons."
+    "message": "Use Tab to move between controls, then press Enter or Space to activate buttons."
   },
   "urlDisplayHelp": {
     "message": "URL fields are read-only. Use the Copy button to copy the cleaned link."
   },
   "onboardingTitle": {
-    "message": "First time here?"
+    "message": "First time using Link Cleaner?"
   },
   "onboardingGuide": {
-    "message": "Remove tracking parameters from the open page URL, then copy a cleaner link for sharing."
+    "message": "Remove tracking parameters from the current page URL and copy a share-ready link."
   },
   "emptyStateTitle": {
     "message": "No page URL found"
   },
   "emptyStateNoUrl": {
-    "message": "Link Cleaner cannot read URLs on Chrome pages such as New Tab, Settings, or the Web Store."
+    "message": "Link Cleaner cannot read URLs on Chrome pages such as New Tab, Settings, or the Chrome Web Store."
   },
   "emptyStateOpenPageAction": {
     "message": "Open a regular web page, then open Link Cleaner again."
@@ -50,10 +50,10 @@
     "message": "Add custom rule"
   },
   "labelBefore": {
-    "message": "Original:"
+    "message": "Original URL:"
   },
   "labelAfter": {
-    "message": "Cleaned:"
+    "message": "Cleaned URL:"
   },
   "buttonCopy": {
     "message": "Copy"
@@ -68,7 +68,7 @@
     "message": "Clean link copied."
   },
   "statusError": {
-    "message": "Something went wrong."
+    "message": "Something went wrong. Please try again."
   },
   "statusProcessing": {
     "message": "Processing..."
@@ -82,10 +82,10 @@
     }
   },
   "premiumStatus": {
-    "message": "Premium is active"
+    "message": "Premium is active."
   },
   "trialStatus": {
-    "message": "Trial: $DAYS$ days left",
+    "message": "Trial ends in $DAYS$ days.",
     "placeholders": {
       "days": {
         "content": "$1"
@@ -93,7 +93,7 @@
     }
   },
   "trialStatusOneDay": {
-    "message": "Trial: $DAYS$ day left",
+    "message": "Trial ends in $DAYS$ day.",
     "placeholders": {
       "days": {
         "content": "$1"
@@ -101,7 +101,7 @@
     }
   },
   "freeStatus": {
-    "message": "Free version (trial has ended)"
+    "message": "Free version (trial ended)"
   },
   "buttonBuy": {
     "message": "Upgrade to Premium ($PRICE$ one-time purchase)",
