@@ -1,25 +1,34 @@
 export type StorageKey<TValues> = Extract<keyof TValues, string>;
-export type StorageSnapshot<
+export type StorageReadResult<
   TValues,
   TKey extends StorageKey<TValues> = StorageKey<TValues>
 > = Partial<Pick<TValues, TKey>>;
-export type StorageWrite<TValues> = Partial<TValues>;
+export type StorageSnapshot<
+  TValues,
+  TKey extends StorageKey<TValues> = StorageKey<TValues>
+> = StorageReadResult<TValues, TKey>;
+export type StorageWrite<TValues> = Readonly<Partial<TValues>>;
 
-export interface StorageAdapter<TValues> {
+export interface StorageReader<TValues> {
   read<TKey extends StorageKey<TValues>>(
     keys: readonly TKey[]
-  ): Promise<StorageSnapshot<TValues, TKey>>;
+  ): Promise<StorageReadResult<TValues, TKey>>;
+}
+
+export interface StorageWriter<TValues> {
   write(values: StorageWrite<TValues>): Promise<void>;
 }
+
+export type StorageAdapter<TValues> = StorageReader<TValues> & StorageWriter<TValues>;
 
 export function createStorageSnapshot<
   TValues,
   TKey extends StorageKey<TValues>
 >(
-  values: StorageSnapshot<TValues>,
+  values: Partial<TValues>,
   keys: readonly TKey[]
-): StorageSnapshot<TValues, TKey> {
-  const snapshot: StorageSnapshot<TValues, TKey> = {};
+): StorageReadResult<TValues, TKey> {
+  const snapshot: StorageReadResult<TValues, TKey> = {};
 
   keys.forEach(key => {
     if (!Object.prototype.hasOwnProperty.call(values, key)) return;

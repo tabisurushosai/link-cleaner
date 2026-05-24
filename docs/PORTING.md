@@ -9,15 +9,19 @@ link-cleaner keeps platform-specific APIs outside of pure logic so the same beha
 - `src/storage` owns persistence boundaries. App code should call storage use cases through a `LinkCleanerStorageAdapter` implementation.
 - UI entry points provide platform services such as the current URL, localized strings, clipboard access, and the storage adapter.
 
+`src/core` should receive plain values only: URLs as strings, tracking parameter arrays, subscription state, locale strings, and timestamps. Platform shells are responsible for reading those values from Chrome APIs, native app APIs, or local storage before calling core functions.
+
 ## Storage adapter contract
 
 Native ports should implement `LinkCleanerStorageAdapter` from `src/storage/storage-adapter.ts`.
-The adapter is based on the platform-neutral `StorageAdapter<TValues, TKey>` interface:
+The adapter is based on the platform-neutral `StorageAdapter<TValues>` interface:
 
 - `read(keys)` returns a partial object for the requested persisted keys.
 - `write(values)` persists only the provided keys and leaves other keys untouched.
 
 `LinkCleanerStorageAdapter` is the app-specific alias for the existing link-cleaner keys. Keep native storage code outside `src/core`; core modules should receive already-loaded values or view-model inputs and should not know where data came from.
+
+The shared contract is intentionally limited to `StorageReader` and `StorageWriter`. Platform adapters should not expose platform handles, transactions, or migration helpers to core use cases. If a native port needs conversion around UserDefaults, SharedPreferences, or a database row, do that inside the adapter and return the same plain JavaScript value shapes.
 
 The persisted keys and value shapes must stay compatible with the Chrome extension:
 
@@ -34,6 +38,13 @@ Chrome uses `chrome.storage.local` in `src/storage/chrome-local-storage-adapter.
 - Preserve the existing stored key names and JSON-compatible value shapes so users can migrate data without conversion rules.
 - Keep UI code as an adapter layer: provide the current URL, localized strings, clipboard writes, and button/input rendering from the platform shell, then consume core view models for display decisions.
 - Do not add network calls, remote code, external fonts, or extra Chrome permissions for portability work.
+
+Recommended native shell flow:
+
+1. Read the active/shared URL from the platform entry point.
+2. Load link-cleaner values through a `LinkCleanerStorageAdapter`.
+3. Call core functions to clean the URL and build display state.
+4. Render native UI and perform clipboard writes in the platform shell.
 
 ## Porting checklist
 
