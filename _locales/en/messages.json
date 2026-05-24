@@ -8,6 +8,24 @@
   "appName": {
     "message": "Link Cleaner"
   },
+  "keyboardHelp": {
+    "message": "Use Tab to move between items, and press Enter or Space to activate buttons."
+  },
+  "originalUrlAriaLabel": {
+    "message": "Original URL"
+  },
+  "cleanedUrlAriaLabel": {
+    "message": "Cleaned URL"
+  },
+  "copyCleanedUrlAriaLabel": {
+    "message": "Copy cleaned URL"
+  },
+  "buyPremiumAriaLabel": {
+    "message": "Upgrade to Premium"
+  },
+  "addCustomRuleAriaLabel": {
+    "message": "Add custom rule"
+  },
   "labelBefore": {
     "message": "Original:"
   },
