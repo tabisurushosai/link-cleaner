@@ -1,20 +1,17 @@
 import { describe, it, expect } from 'vitest';
 import { TRIAL_PERIOD_MS } from './core/subscription';
-import { getSubscriptionStatus, type LinkCleanerStorageAdapter } from './storage/link-cleaner-storage';
+import { getSubscriptionStatus } from './storage/link-cleaner-storage';
+import type {
+  LinkCleanerStorageAdapter,
+  LinkCleanerStoredValues,
+  LinkCleanerStoragePatch
+} from './storage/storage-adapter';
 
-interface MemoryStorageState {
-  isPremium?: boolean;
-  trialStartTs?: number;
-  customParams?: string[];
-}
-
-function createMemoryStorage(initial: MemoryStorageState = {}) {
-  const state: MemoryStorageState = { ...initial };
+function createMemoryStorage(initial: LinkCleanerStoredValues = {}) {
+  const state: LinkCleanerStoredValues = { ...initial };
   const adapter: LinkCleanerStorageAdapter = {
     async get(keys) {
-      return Object.fromEntries(
-        keys.map(key => [key, state[key]])
-      ) as Partial<MemoryStorageState>;
+      return Object.fromEntries(keys.map(key => [key, state[key]])) as LinkCleanerStoragePatch;
     },
     async set(values) {
       Object.assign(state, values);

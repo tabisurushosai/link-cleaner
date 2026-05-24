@@ -1,4 +1,5 @@
 export type SupportedLocale = 'ja' | 'en';
+export type MessageArgs = string | string[] | undefined;
 
 export const PREMIUM_PRICE_USD = 3;
 
@@ -18,4 +19,24 @@ export function formatUsdPrice(value: number, locale: SupportedLocale): string {
     currency: 'USD',
     maximumFractionDigits: 0
   }).format(value);
+}
+
+export function formatMessageArgs(
+  messageKey: string,
+  args: MessageArgs,
+  premiumPrice: string,
+  locale: SupportedLocale
+): MessageArgs {
+  if (messageKey === 'buttonBuy' || messageKey === 'buyPremiumAriaLabel') {
+    return [premiumPrice];
+  }
+
+  if (!args) return undefined;
+
+  if (messageKey === 'trialStatus' || messageKey === 'trialStatusOneDay') {
+    const messageArgs = Array.isArray(args) ? args : [args];
+    return messageArgs.map(arg => formatLocalizedNumber(Number(arg), locale));
+  }
+
+  return args;
 }

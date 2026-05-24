@@ -7,13 +7,12 @@ import {
 } from './storage/link-cleaner-storage';
 import { chromeLocalStorageAdapter } from './storage/chrome-local-storage-adapter';
 import {
-  formatLocalizedNumber,
+  formatMessageArgs,
   formatUsdPrice,
   getSupportedLocale,
+  type MessageArgs,
   PREMIUM_PRICE_USD
 } from './core/i18n-formatting';
-
-type MessageArgs = string | string[] | undefined;
 
 async function init() {
   const uiLanguage = getSupportedLocale(chrome.i18n.getUILanguage());
@@ -102,7 +101,7 @@ async function init() {
         await navigator.clipboard.writeText(cleanedUrl);
         setStatus(getMessage('statusCopied'));
         setTimeout(clearStatus, 2000);
-      } catch (err) {
+      } catch {
         setStatus(getMessage('statusError'), true);
       }
     });
@@ -153,26 +152,6 @@ async function init() {
       }
     });
   }
-}
-
-function formatMessageArgs(
-  messageKey: string,
-  args: MessageArgs,
-  premiumPrice: string,
-  locale: ReturnType<typeof getSupportedLocale>
-): MessageArgs {
-  if (messageKey === 'buttonBuy' || messageKey === 'buyPremiumAriaLabel') {
-    return [premiumPrice];
-  }
-
-  if (!args) return undefined;
-
-  if (messageKey === 'trialStatus' || messageKey === 'trialStatusOneDay') {
-    const messageArgs = Array.isArray(args) ? args : [args];
-    return messageArgs.map(arg => formatLocalizedNumber(Number(arg), locale));
-  }
-
-  return args;
 }
 
 function translateUI(getMessage: (messageKey: string, args?: MessageArgs) => string) {

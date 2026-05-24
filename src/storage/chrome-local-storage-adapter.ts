@@ -1,8 +1,30 @@
 import type {
   LinkCleanerStorageAdapter,
   LinkCleanerStorageKey,
+  LinkCleanerStoredValues,
   LinkCleanerStoragePatch
 } from './storage-adapter';
+
+function toStoragePatch(
+  result: Partial<Record<LinkCleanerStorageKey, unknown>>,
+  keys: readonly LinkCleanerStorageKey[]
+): LinkCleanerStoragePatch {
+  const patch: LinkCleanerStoragePatch = {};
+
+  keys.forEach(key => {
+    if (!Object.prototype.hasOwnProperty.call(result, key)) return;
+
+    if (key === 'isPremium') {
+      patch.isPremium = result[key] as LinkCleanerStoredValues['isPremium'];
+    } else if (key === 'trialStartTs') {
+      patch.trialStartTs = result[key] as LinkCleanerStoredValues['trialStartTs'];
+    } else {
+      patch.customParams = result[key] as LinkCleanerStoredValues['customParams'];
+    }
+  });
+
+  return patch;
+}
 
 function getFromChrome(keys: readonly LinkCleanerStorageKey[]): Promise<LinkCleanerStoragePatch> {
   if (typeof chrome === 'undefined' || !chrome.storage?.local) {
@@ -10,7 +32,7 @@ function getFromChrome(keys: readonly LinkCleanerStorageKey[]): Promise<LinkClea
   }
 
   return new Promise(resolve => {
-    chrome.storage.local.get([...keys], result => resolve(result as LinkCleanerStoragePatch));
+    chrome.storage.local.get([...keys], result => resolve(toStoragePatch(result, keys)));
   });
 }
 

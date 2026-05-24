@@ -1,16 +1,11 @@
 import {
-  SubscriptionStatus,
   canUseCustomParams,
   evaluateSubscriptionState,
-  getEffectiveTrackingParams
+  getEffectiveTrackingParams,
+  type SubscriptionStatus
 } from '../core/subscription';
 import type { LinkCleanerStorageAdapter } from './storage-adapter';
-export type {
-  LinkCleanerStorageAdapter,
-  LinkCleanerStoredValues,
-  LinkCleanerStorageKey,
-  LinkCleanerStoragePatch
-} from './storage-adapter';
+export type { LinkCleanerStorageAdapter } from './storage-adapter';
 
 export async function getSubscriptionStatus(
   storage: LinkCleanerStorageAdapter
