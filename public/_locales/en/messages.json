@@ -9,22 +9,22 @@
     "message": "Link Cleaner"
   },
   "keyboardHelp": {
-    "message": "Use Tab to move between controls, then press Enter or Space to activate a button."
+    "message": "Use Tab to move between controls, then press Enter or Space to activate buttons."
   },
   "urlDisplayHelp": {
-    "message": "URL fields are read-only. Use Copy to copy the cleaned link."
+    "message": "The URL fields are read-only. Use the Copy button to copy the cleaned link."
   },
   "onboardingTitle": {
     "message": "New to Link Cleaner?"
   },
   "onboardingGuide": {
-    "message": "Remove tracking parameters from the open page URL and copy a clean link for sharing."
+    "message": "Remove tracking parameters from the current page URL and copy a cleaner link for sharing."
   },
   "emptyStateTitle": {
     "message": "No page URL found"
   },
   "emptyStateNoUrl": {
-    "message": "Link Cleaner cannot read URLs on Chrome pages such as New Tab, Settings, or the Chrome Web Store."
+    "message": "Chrome pages such as New Tab, Settings, and the Chrome Web Store do not expose page URLs to Link Cleaner."
   },
   "emptyStateOpenPageAction": {
     "message": "Open a regular web page, then open Link Cleaner again."
@@ -39,7 +39,7 @@
     "message": "Copy cleaned URL"
   },
   "buyPremiumAriaLabel": {
-    "message": "Upgrade to Premium ($PRICE$ one-time purchase)",
+    "message": "Upgrade to Premium ($PRICE$, one-time purchase)",
     "placeholders": {
       "price": {
         "content": "$1"
@@ -74,7 +74,7 @@
     "message": "Processing..."
   },
   "statusRuleAdded": {
-    "message": "Custom rule \"$PARAM$\" added.",
+    "message": "Added custom rule \"$PARAM$\".",
     "placeholders": {
       "param": {
         "content": "$1"
@@ -85,7 +85,7 @@
     "message": "Premium is active."
   },
   "trialStatus": {
-    "message": "Trial ends on $END_DATE$ ($DAYS$ days left).",
+    "message": "Trial ends on $END_DATE$ ($DAYS$ days remaining).",
     "placeholders": {
       "days": {
         "content": "$1"
@@ -96,7 +96,7 @@
     }
   },
   "trialStatusOneDay": {
-    "message": "Trial ends on $END_DATE$ ($DAYS$ day left).",
+    "message": "Trial ends on $END_DATE$ ($DAYS$ day remaining).",
     "placeholders": {
       "days": {
         "content": "$1"
@@ -107,10 +107,10 @@
     }
   },
   "freeStatus": {
-    "message": "Free version (trial ended)."
+    "message": "Free version (trial has ended)."
   },
   "buttonBuy": {
-    "message": "Upgrade to Premium ($PRICE$ one-time purchase)",
+    "message": "Upgrade to Premium ($PRICE$, one-time purchase)",
     "placeholders": {
       "price": {
         "content": "$1"
@@ -121,10 +121,10 @@
     "message": "Add rule"
   },
   "customParamLabel": {
-    "message": "Custom rule"
+    "message": "Custom removal rule"
   },
   "placeholderAddParam": {
-    "message": "e.g. ref"
+    "message": "e.g., ref"
   },
   "msgPremiumOnly": {
     "message": "Premium is required to save custom rules."
