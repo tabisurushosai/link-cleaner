@@ -6,6 +6,7 @@ export interface SubscriptionStatus {
   isPremium: boolean;
   isTrialActive: boolean;
   trialDaysLeft: number;
+  trialEndsAt: number;
 }
 
 export interface StoredSubscriptionState {
@@ -29,9 +30,10 @@ export function evaluateSubscriptionState(
   const elapsed = now - trialStartTs;
   const isTrialActive = elapsed < TRIAL_PERIOD_MS;
   const trialDaysLeft = Math.max(0, Math.ceil((TRIAL_PERIOD_MS - elapsed) / (24 * 60 * 60 * 1000)));
+  const trialEndsAt = trialStartTs + TRIAL_PERIOD_MS;
 
   return {
-    status: { isPremium, isTrialActive, trialDaysLeft },
+    status: { isPremium, isTrialActive, trialDaysLeft, trialEndsAt },
     trialStartTs,
     shouldPersistTrialStart
   };

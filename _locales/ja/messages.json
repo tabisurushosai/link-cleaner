@@ -12,7 +12,7 @@
     "message": "Tabキーで項目を移動し、Enterキーまたはスペースキーでボタンを実行できます。"
   },
   "urlDisplayHelp": {
-    "message": "URL欄は読み取り専用です。コピーするにはコピー ボタンを使います。"
+    "message": "URL 欄は読み取り専用です。コピーするには「コピー」ボタンを使います。"
   },
   "onboardingTitle": {
     "message": "初めての方へ"
@@ -24,10 +24,10 @@
     "message": "ページのURLが見つかりません"
   },
   "emptyStateNoUrl": {
-    "message": "Chromeの新しいタブ、設定画面、Chrome ウェブストアなどではURLを取得できません。"
+    "message": "Chrome の新しいタブ、設定画面、Chrome ウェブストアなどでは URL を取得できません。"
   },
   "emptyStateOpenPageAction": {
-    "message": "通常のWebページを開いてから、もう一度すっきりリンクを開いてください。"
+    "message": "通常の Web ページを開いてから、もう一度すっきりリンクを開いてください。"
   },
   "originalUrlAriaLabel": {
     "message": "除去前のURL"
@@ -39,7 +39,7 @@
     "message": "除去後のURLをコピー"
   },
   "buyPremiumAriaLabel": {
-    "message": "プレミアムにアップグレード（$PRICE$の買い切り）",
+    "message": "プレミアムにアップグレード（$PRICE$・買い切り）",
     "placeholders": {
       "price": {
         "content": "$1"
@@ -74,7 +74,7 @@
     "message": "処理中…"
   },
   "statusRuleAdded": {
-    "message": "カスタムルールを追加しました：$PARAM$",
+    "message": "カスタムルール「$PARAM$」を追加しました。",
     "placeholders": {
       "param": {
         "content": "$1"
@@ -85,26 +85,32 @@
     "message": "プレミアムが有効です。"
   },
   "trialStatus": {
-    "message": "試用期間は残り$DAYS$日です。",
+    "message": "試用期間は$END_DATE$までです（あと$DAYS$日）。",
     "placeholders": {
       "days": {
         "content": "$1"
+      },
+      "end_date": {
+        "content": "$2"
       }
     }
   },
   "trialStatusOneDay": {
-    "message": "試用期間は残り$DAYS$日です。",
+    "message": "試用期間は$END_DATE$までです（あと$DAYS$日）。",
     "placeholders": {
       "days": {
         "content": "$1"
+      },
+      "end_date": {
+        "content": "$2"
       }
     }
   },
   "freeStatus": {
-    "message": "無料版（試用期間は終了）"
+    "message": "無料版（試用期間は終了しました）"
   },
   "buttonBuy": {
-    "message": "プレミアムにアップグレード（$PRICE$の買い切り）",
+    "message": "プレミアムにアップグレード（$PRICE$・買い切り）",
     "placeholders": {
       "price": {
         "content": "$1"

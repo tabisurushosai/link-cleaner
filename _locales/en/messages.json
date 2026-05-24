@@ -85,18 +85,24 @@
     "message": "Premium is active."
   },
   "trialStatus": {
-    "message": "Trial ends in $DAYS$ days.",
+    "message": "Trial ends on $END_DATE$ ($DAYS$ days left).",
     "placeholders": {
       "days": {
         "content": "$1"
+      },
+      "end_date": {
+        "content": "$2"
       }
     }
   },
   "trialStatusOneDay": {
-    "message": "Trial ends in $DAYS$ day.",
+    "message": "Trial ends on $END_DATE$ ($DAYS$ day left).",
     "placeholders": {
       "days": {
         "content": "$1"
+      },
+      "end_date": {
+        "content": "$2"
       }
     }
   },

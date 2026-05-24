@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  formatLocalizedDate,
   formatMessageArgs,
   formatLocalizedNumber,
   formatUsdPrice,
@@ -19,6 +20,13 @@ describe('i18n formatting', () => {
     expect(formatLocalizedNumber(1234, 'ja')).toBe('1,234');
   });
 
+  it('formats dates with the selected locale', () => {
+    const trialEndDate = new Date(2026, 4, 24, 12).getTime();
+
+    expect(formatLocalizedDate(trialEndDate, 'en')).toBe('May 24, 2026');
+    expect(formatLocalizedDate(trialEndDate, 'ja')).toBe('2026年5月24日');
+  });
+
   it('formats the one-time Premium price without fractional digits', () => {
     expect(formatUsdPrice(PREMIUM_PRICE_USD, 'en')).toBe('$3');
     expect(formatUsdPrice(PREMIUM_PRICE_USD, 'ja')).toBe('US$3');
@@ -30,8 +38,16 @@ describe('i18n formatting', () => {
   });
 
   it('localizes trial day counts while leaving other message args unchanged', () => {
-    expect(formatMessageArgs('trialStatus', ['1234'], '$3', 'en')).toEqual(['1,234']);
-    expect(formatMessageArgs('trialStatusOneDay', '1', 'US$3', 'ja')).toEqual(['1']);
+    const trialEndDate = new Date(2026, 4, 24, 12).getTime().toString();
+
+    expect(formatMessageArgs('trialStatus', ['1234', trialEndDate], '$3', 'en')).toEqual([
+      '1,234',
+      'May 24, 2026'
+    ]);
+    expect(formatMessageArgs('trialStatusOneDay', ['1', trialEndDate], 'US$3', 'ja')).toEqual([
+      '1',
+      '2026年5月24日'
+    ]);
     expect(formatMessageArgs('statusRuleAdded', 'ref', '$3', 'en')).toBe('ref');
   });
 });
