@@ -3,8 +3,9 @@ import { resolve } from "node:path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  publicDir: "public",
+  publicDir: resolve(__dirname, "public"),
   build: {
+    copyPublicDir: true,
     outDir: "dist",
     emptyOutDir: true,
     rollupOptions: {
