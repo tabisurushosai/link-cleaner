@@ -11,6 +11,12 @@
   "keyboardHelp": {
     "message": "Use Tab to move between items, and press Enter or Space to activate buttons."
   },
+  "onboardingGuide": {
+    "message": "Open this on a page, then copy a cleaner link with the button below."
+  },
+  "emptyStateNoUrl": {
+    "message": "No page URL is available. Open a web page, then open Link Cleaner again."
+  },
   "originalUrlAriaLabel": {
     "message": "Original URL"
   },

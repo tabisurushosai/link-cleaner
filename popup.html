@@ -43,6 +43,24 @@
       margin-bottom: 10px;
     }
 
+    .guide-text,
+    .empty-state {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .empty-state {
+      padding: 10px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      background: #f9fafb;
+    }
+
+    .empty-state[hidden] {
+      display: none;
+    }
+
     .url-label,
     .field-label {
       display: block;
@@ -195,6 +213,8 @@
 <main id="app" aria-labelledby="app-title">
   <h1 id="app-title" data-i18n="appName">すっきりリンク</h1>
   <p id="keyboard-help" class="visually-hidden" data-i18n="keyboardHelp">Tabキーで項目を移動し、EnterまたはSpaceでボタンを実行できます。</p>
+  <p id="onboarding-guide" class="guide-text" data-i18n="onboardingGuide">ページを開いたら、このボタンからすっきりした共有リンクをコピーできます。</p>
+  <p id="empty-state" class="empty-state" data-i18n="emptyStateNoUrl" role="status" aria-live="polite" hidden>URLを取得できませんでした。Webページを開いてから拡張機能をもう一度開いてください。</p>
 
   <section class="url-section" aria-labelledby="original-url-label">
     <div id="original-url-label" class="url-label" data-i18n="labelBefore">除去前：</div>
