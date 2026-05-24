@@ -18,7 +18,7 @@
     "message": "初めての方へ"
   },
   "onboardingGuide": {
-    "message": "開いているページの URL から追跡パラメータを取り除き、共有しやすいリンクとしてコピーできます。"
+    "message": "まず除去後のリンクを確認し、問題なければ「コピー」で共有用リンクを保存します。"
   },
   "emptyStateTitle": {
     "message": "ページのURLが見つかりません"
@@ -28,6 +28,15 @@
   },
   "emptyStateOpenPageAction": {
     "message": "通常の Web ページを開いてから、もう一度すっきりリンクを開いてください。"
+  },
+  "noTrackingTitle": {
+    "message": "取り除く項目は見つかりませんでした"
+  },
+  "noTrackingDescription": {
+    "message": "このページの URL は、現在のルールではそのまま共有できる状態です。"
+  },
+  "noTrackingAction": {
+    "message": "必要であれば、そのまま「コピー」で共有用リンクを保存できます。"
   },
   "originalUrlAriaLabel": {
     "message": "除去前のURL"

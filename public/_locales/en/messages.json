@@ -18,7 +18,7 @@
     "message": "New to Link Cleaner?"
   },
   "onboardingGuide": {
-    "message": "Remove tracking parameters from the current page URL and copy a cleaner link for sharing."
+    "message": "First review the cleaned link, then use Copy to save the shareable link."
   },
   "emptyStateTitle": {
     "message": "No page URL found"
@@ -28,6 +28,15 @@
   },
   "emptyStateOpenPageAction": {
     "message": "Open a regular web page, then open Link Cleaner again."
+  },
+  "noTrackingTitle": {
+    "message": "No tracking items found"
+  },
+  "noTrackingDescription": {
+    "message": "This page URL is already ready to share with the current rules."
+  },
+  "noTrackingAction": {
+    "message": "If you need it, use Copy to save this link as-is."
   },
   "originalUrlAriaLabel": {
     "message": "Original URL"
