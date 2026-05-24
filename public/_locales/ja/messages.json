@@ -3,31 +3,31 @@
     "message": "すっきりリンク"
   },
   "extDesc": {
-    "message": "現在のページのURLから追跡パラメータ（utm_*など）を取り除き、共有しやすいリンクとしてコピーします。"
+    "message": "現在のページの URL から追跡パラメータ（utm_* など）を取り除き、共有しやすいリンクとしてコピーします。"
   },
   "appName": {
     "message": "すっきりリンク"
   },
   "keyboardHelp": {
-    "message": "Tabキーで項目間を移動し、Enterキーまたはスペースキーでボタンを実行できます。"
+    "message": "Tab キーで項目間を移動し、Enter キーまたはスペースキーでボタンを押せます。"
   },
   "urlDisplayHelp": {
-    "message": "URL欄は読み取り専用です。除去後のリンクをコピーするには「コピー」ボタンを使います。"
+    "message": "URL 欄は読み取り専用です。除去後のリンクをコピーするには「コピー」ボタンを使います。"
   },
   "onboardingTitle": {
     "message": "初めての方へ"
   },
   "onboardingGuide": {
-    "message": "開いているページのURLから追跡パラメータを取り除き、共有しやすいリンクとしてコピーできます。"
+    "message": "開いているページの URL から追跡パラメータを取り除き、共有しやすいリンクとしてコピーできます。"
   },
   "emptyStateTitle": {
     "message": "ページのURLが見つかりません"
   },
   "emptyStateNoUrl": {
-    "message": "Chromeの新しいタブ、設定画面、Chrome ウェブストアなどではURLを取得できません。"
+    "message": "Chrome の新しいタブ、設定画面、Chrome ウェブストアなどでは URL を取得できません。"
   },
   "emptyStateOpenPageAction": {
-    "message": "通常のWebページを開いてから、もう一度すっきりリンクを開いてください。"
+    "message": "通常の Web ページを開いてから、もう一度すっきりリンクを開いてください。"
   },
   "originalUrlAriaLabel": {
     "message": "除去前のURL"
@@ -82,7 +82,7 @@
     }
   },
   "premiumStatus": {
-    "message": "プレミアムが有効です。"
+    "message": "プレミアム機能が有効です。"
   },
   "trialStatus": {
     "message": "試用期間は$END_DATE$までです（残り$DAYS$日）。",
@@ -124,9 +124,9 @@
     "message": "カスタムルール"
   },
   "placeholderAddParam": {
-    "message": "例：ref"
+    "message": "例: ref"
   },
   "msgPremiumOnly": {
-    "message": "カスタムルールを保存するにはプレミアムが必要です。"
+    "message": "カスタムルールの保存にはプレミアムが必要です。"
   }
 }
