@@ -1,24 +1,20 @@
-import type { LinkCleanerStorageAdapter } from './storage-adapter';
+import type {
+  LinkCleanerStorageAdapter,
+  LinkCleanerStorageKey,
+  LinkCleanerStoragePatch
+} from './storage-adapter';
 
-interface StoredValues {
-  isPremium?: boolean;
-  trialStartTs?: number;
-  customParams?: string[];
-}
-
-type StorageKey = keyof StoredValues;
-
-function getFromChrome(keys: StorageKey[]): Promise<Partial<StoredValues>> {
+function getFromChrome(keys: readonly LinkCleanerStorageKey[]): Promise<LinkCleanerStoragePatch> {
   if (typeof chrome === 'undefined' || !chrome.storage?.local) {
     return Promise.resolve({});
   }
 
   return new Promise(resolve => {
-    chrome.storage.local.get(keys, result => resolve(result as Partial<StoredValues>));
+    chrome.storage.local.get([...keys], result => resolve(result as LinkCleanerStoragePatch));
   });
 }
 
-function setToChrome(values: Partial<StoredValues>): Promise<void> {
+function setToChrome(values: LinkCleanerStoragePatch): Promise<void> {
   if (typeof chrome === 'undefined' || !chrome.storage?.local) {
     return Promise.resolve();
   }
@@ -29,24 +25,6 @@ function setToChrome(values: Partial<StoredValues>): Promise<void> {
 }
 
 export const chromeLocalStorageAdapter: LinkCleanerStorageAdapter = {
-  async readSubscriptionState() {
-    const result = await getFromChrome(['isPremium', 'trialStartTs']);
-    return {
-      isPremium: result.isPremium,
-      trialStartTs: result.trialStartTs
-    };
-  },
-  writeTrialStartTs(trialStartTs) {
-    return setToChrome({ trialStartTs });
-  },
-  async readCustomParams() {
-    const result = await getFromChrome(['customParams']);
-    return Array.isArray(result.customParams) ? result.customParams : undefined;
-  },
-  writeCustomParams(customParams) {
-    return setToChrome({ customParams });
-  },
-  writePremiumState(isPremium) {
-    return setToChrome({ isPremium });
-  }
+  get: getFromChrome,
+  set: setToChrome
 };

@@ -11,23 +11,13 @@ interface MemoryStorageState {
 function createMemoryStorage(initial: MemoryStorageState = {}) {
   const state: MemoryStorageState = { ...initial };
   const adapter: LinkCleanerStorageAdapter = {
-    async readSubscriptionState() {
-      return {
-        isPremium: state.isPremium,
-        trialStartTs: state.trialStartTs
-      };
+    async get(keys) {
+      return Object.fromEntries(
+        keys.map(key => [key, state[key]])
+      ) as Partial<MemoryStorageState>;
     },
-    async writeTrialStartTs(trialStartTs) {
-      state.trialStartTs = trialStartTs;
-    },
-    async readCustomParams() {
-      return state.customParams;
-    },
-    async writeCustomParams(customParams) {
-      state.customParams = customParams;
-    },
-    async writePremiumState(isPremium) {
-      state.isPremium = isPremium;
+    async set(values) {
+      Object.assign(state, values);
     }
   };
 
