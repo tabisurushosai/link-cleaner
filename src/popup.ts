@@ -6,12 +6,24 @@ import {
   saveCustomParam
 } from './storage/link-cleaner-storage';
 import { chromeLocalStorageAdapter } from './storage/chrome-local-storage-adapter';
+import {
+  formatLocalizedNumber,
+  formatUsdPrice,
+  getSupportedLocale,
+  PREMIUM_PRICE_USD
+} from './core/i18n-formatting';
+
+type MessageArgs = string | string[] | undefined;
 
 async function init() {
-  const uiLanguage = chrome.i18n.getUILanguage().toLowerCase().startsWith('en') ? 'en' : 'ja';
-  const numberFormatter = new Intl.NumberFormat(uiLanguage);
+  const uiLanguage = getSupportedLocale(chrome.i18n.getUILanguage());
+  const premiumPrice = formatUsdPrice(PREMIUM_PRICE_USD, uiLanguage);
+  const getMessage = (messageKey: string, args?: MessageArgs) => chrome.i18n.getMessage(
+    messageKey,
+    formatMessageArgs(messageKey, args, premiumPrice, uiLanguage)
+  );
 
-  translateUI();
+  translateUI(getMessage);
   document.documentElement.lang = uiLanguage;
 
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -45,24 +57,16 @@ async function init() {
     setStatus('');
   };
 
-  const formatSubscriptionMessageArgs = (messageKey: string, args?: string[]) => {
-    if (!args) return undefined;
-    if (messageKey === 'trialStatus' || messageKey === 'trialStatusOneDay') {
-      return args.map(arg => numberFormatter.format(Number(arg)));
-    }
-    return args;
-  };
-
   const refreshUrl = async () => {
     const params = tab?.url ? await getTrackingParams(chromeLocalStorageAdapter) : [];
-    const viewModel = createUrlViewModel(tab?.url, params, chrome.i18n.getMessage('errorNotFound'));
+    const viewModel = createUrlViewModel(tab?.url, params, getMessage('errorNotFound'));
     cleanedUrl = viewModel.cleanedUrl;
     if (originalDisplay) originalDisplay.textContent = viewModel.originalText;
     if (cleanedDisplay) cleanedDisplay.textContent = viewModel.cleanedText;
     if (emptyStateDisplay) {
       emptyStateDisplay.hidden = !viewModel.emptyStateMessageKey;
       emptyStateDisplay.textContent = viewModel.emptyStateMessageKey
-        ? chrome.i18n.getMessage(viewModel.emptyStateMessageKey)
+        ? getMessage(viewModel.emptyStateMessageKey)
         : '';
     }
     setDisabled(copyBtn, !viewModel.canCopy);
@@ -72,9 +76,9 @@ async function init() {
     const status = await getSubscriptionStatus(chromeLocalStorageAdapter);
     const viewModel = createSubscriptionViewModel(status);
     if (subStatusDisplay) {
-      subStatusDisplay.textContent = chrome.i18n.getMessage(
+      subStatusDisplay.textContent = getMessage(
         viewModel.messageKey,
-        formatSubscriptionMessageArgs(viewModel.messageKey, viewModel.messageArgs)
+        viewModel.messageArgs
       );
     }
     if (buyBtn) buyBtn.hidden = !viewModel.showBuyButton;
@@ -96,10 +100,10 @@ async function init() {
     copyBtn.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(cleanedUrl);
-        setStatus(chrome.i18n.getMessage('statusCopied'));
+        setStatus(getMessage('statusCopied'));
         setTimeout(clearStatus, 2000);
       } catch (err) {
-        setStatus(chrome.i18n.getMessage('statusError'), true);
+        setStatus(getMessage('statusError'), true);
       }
     });
   } else if (copyBtn) {
@@ -108,10 +112,10 @@ async function init() {
 
   if (buyBtn) {
     buyBtn.addEventListener('click', async () => {
-      const buyButtonText = chrome.i18n.getMessage('buttonBuy');
+      const buyButtonText = getMessage('buttonBuy');
       setDisabled(buyBtn, true);
       buyBtn.setAttribute('aria-busy', 'true');
-      buyBtn.textContent = chrome.i18n.getMessage('statusProcessing');
+      buyBtn.textContent = getMessage('statusProcessing');
       try {
         await buyPremium(chromeLocalStorageAdapter);
         await refreshSubscriptionUI();
@@ -134,10 +138,10 @@ async function init() {
         if (success) {
           customParamInput.value = '';
           await refreshUrl();
-          setStatus(chrome.i18n.getMessage('statusRuleAdded', param));
+          setStatus(getMessage('statusRuleAdded', param));
           setTimeout(clearStatus, 2000);
         } else {
-          setStatus(chrome.i18n.getMessage('msgPremiumOnly'), true);
+          setStatus(getMessage('msgPremiumOnly'), true);
         }
       }
     });
@@ -151,18 +155,38 @@ async function init() {
   }
 }
 
-function translateUI() {
-  translateTextContent();
-  translateAttribute('[data-i18n-placeholder]', 'data-i18n-placeholder', 'placeholder');
-  translateAttribute('[data-i18n-aria-label]', 'data-i18n-aria-label', 'aria-label');
+function formatMessageArgs(
+  messageKey: string,
+  args: MessageArgs,
+  premiumPrice: string,
+  locale: ReturnType<typeof getSupportedLocale>
+): MessageArgs {
+  if (messageKey === 'buttonBuy' || messageKey === 'buyPremiumAriaLabel') {
+    return [premiumPrice];
+  }
+
+  if (!args) return undefined;
+
+  if (messageKey === 'trialStatus' || messageKey === 'trialStatusOneDay') {
+    const messageArgs = Array.isArray(args) ? args : [args];
+    return messageArgs.map(arg => formatLocalizedNumber(Number(arg), locale));
+  }
+
+  return args;
 }
 
-function translateTextContent() {
+function translateUI(getMessage: (messageKey: string, args?: MessageArgs) => string) {
+  translateTextContent(getMessage);
+  translateAttribute(getMessage, '[data-i18n-placeholder]', 'data-i18n-placeholder', 'placeholder');
+  translateAttribute(getMessage, '[data-i18n-aria-label]', 'data-i18n-aria-label', 'aria-label');
+}
+
+function translateTextContent(getMessage: (messageKey: string, args?: MessageArgs) => string) {
   const elements = document.querySelectorAll('[data-i18n]');
   elements.forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (key) {
-      const message = chrome.i18n.getMessage(key);
+      const message = getMessage(key);
       if (message) {
         el.textContent = message;
       }
@@ -170,12 +194,17 @@ function translateTextContent() {
   });
 }
 
-function translateAttribute(selector: string, keyAttribute: string, targetAttribute: string) {
+function translateAttribute(
+  getMessage: (messageKey: string, args?: MessageArgs) => string,
+  selector: string,
+  keyAttribute: string,
+  targetAttribute: string
+) {
   const elements = document.querySelectorAll(selector);
   elements.forEach(el => {
     const key = el.getAttribute(keyAttribute);
     if (key) {
-      const message = chrome.i18n.getMessage(key);
+      const message = getMessage(key);
       if (message) {
         el.setAttribute(targetAttribute, message);
       }
