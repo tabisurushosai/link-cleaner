@@ -4,13 +4,18 @@ link-cleaner keeps platform-specific APIs outside of pure logic so the same beha
 
 ## Boundaries
 
-- `src/core` is pure TypeScript logic. Do not import `chrome.*`, DOM APIs, native SDKs, network APIs, or storage implementations here.
+- `src/core` is pure TypeScript logic. Do not import `chrome.*`, browser `window`/`document` APIs, native SDKs, network APIs, or storage implementations here.
+- `src/core` must compile without Chrome extension types. `npm run build` runs `tsc -p tsconfig.core.json --noEmit` to catch accidental `chrome.*` usage in core modules.
 - `src/storage` owns persistence boundaries. App code should call storage use cases through a `LinkCleanerStorageAdapter` implementation.
 - UI entry points provide platform services such as the current URL, localized strings, clipboard access, and the storage adapter.
 
 ## Storage adapter contract
 
 Native ports should implement `LinkCleanerStorageAdapter` from `src/storage/storage-adapter.ts`.
+The adapter is a small key/value boundary:
+
+- `get(keys)` returns a partial object for the requested persisted keys.
+- `set(values)` persists only the provided keys and leaves other keys untouched.
 
 The persisted keys and value shapes must stay compatible with the Chrome extension:
 
@@ -18,7 +23,7 @@ The persisted keys and value shapes must stay compatible with the Chrome extensi
 - `trialStartTs?: number`
 - `customParams?: string[]`
 
-Chrome uses `chrome.storage.local` in `src/storage/chrome-local-storage-adapter.ts`. iOS or Android ports can map the same values to local storage such as UserDefaults, SharedPreferences, or an app database, as long as the shapes above are preserved.
+Chrome uses `chrome.storage.local` in `src/storage/chrome-local-storage-adapter.ts`. iOS or Android ports can map the same values to local storage such as UserDefaults, SharedPreferences, or an app database, as long as the key names and shapes above are preserved.
 
 ## Porting checklist
 

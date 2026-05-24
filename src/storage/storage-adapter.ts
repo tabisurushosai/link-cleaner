@@ -1,9 +1,13 @@
-import type { StoredSubscriptionState } from '../core/subscription';
+export interface LinkCleanerStoredValues {
+  isPremium?: boolean;
+  trialStartTs?: number;
+  customParams?: string[];
+}
+
+export type LinkCleanerStorageKey = keyof LinkCleanerStoredValues;
+export type LinkCleanerStoragePatch = Partial<LinkCleanerStoredValues>;
 
 export interface LinkCleanerStorageAdapter {
-  readSubscriptionState(): Promise<StoredSubscriptionState>;
-  writeTrialStartTs(trialStartTs: number): Promise<void>;
-  readCustomParams(): Promise<string[] | undefined>;
-  writeCustomParams(customParams: string[]): Promise<void>;
-  writePremiumState(isPremium: boolean): Promise<void>;
+  get(keys: readonly LinkCleanerStorageKey[]): Promise<LinkCleanerStoragePatch>;
+  set(values: LinkCleanerStoragePatch): Promise<void>;
 }

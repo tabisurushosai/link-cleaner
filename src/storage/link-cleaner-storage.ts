@@ -5,16 +5,21 @@ import {
   getEffectiveTrackingParams
 } from '../core/subscription';
 import type { LinkCleanerStorageAdapter } from './storage-adapter';
-export type { LinkCleanerStorageAdapter } from './storage-adapter';
+export type {
+  LinkCleanerStorageAdapter,
+  LinkCleanerStoredValues,
+  LinkCleanerStorageKey,
+  LinkCleanerStoragePatch
+} from './storage-adapter';
 
 export async function getSubscriptionStatus(
   storage: LinkCleanerStorageAdapter
 ): Promise<SubscriptionStatus> {
-  const result = await storage.readSubscriptionState();
+  const result = await storage.get(['isPremium', 'trialStartTs']);
   const evaluation = evaluateSubscriptionState(result);
 
   if (evaluation.shouldPersistTrialStart) {
-    await storage.writeTrialStartTs(evaluation.trialStartTs);
+    await storage.set({ trialStartTs: evaluation.trialStartTs });
   }
 
   return evaluation.status;
@@ -24,7 +29,8 @@ export async function getTrackingParams(
   storage: LinkCleanerStorageAdapter
 ): Promise<string[]> {
   const status = await getSubscriptionStatus(storage);
-  const customParams = await storage.readCustomParams();
+  const result = await storage.get(['customParams']);
+  const customParams = Array.isArray(result.customParams) ? result.customParams : undefined;
 
   return getEffectiveTrackingParams(customParams, status);
 }
@@ -38,10 +44,11 @@ export async function saveCustomParam(
     return false;
   }
 
-  const customParams = await storage.readCustomParams() ?? [];
+  const result = await storage.get(['customParams']);
+  const customParams = Array.isArray(result.customParams) ? result.customParams : [];
 
   if (!customParams.includes(param)) {
-    await storage.writeCustomParams([...customParams, param]);
+    await storage.set({ customParams: [...customParams, param] });
   }
 
   return true;
@@ -53,5 +60,5 @@ export async function buyPremium(
   await new Promise<void>(resolve => {
     setTimeout(() => resolve(), 1000);
   });
-  await storage.writePremiumState(true);
+  await storage.set({ isPremium: true });
 }
