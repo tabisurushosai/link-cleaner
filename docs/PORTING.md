@@ -12,10 +12,10 @@ link-cleaner keeps platform-specific APIs outside of pure logic so the same beha
 ## Storage adapter contract
 
 Native ports should implement `LinkCleanerStorageAdapter` from `src/storage/storage-adapter.ts`.
-The adapter is a small key/value boundary:
+The adapter is a small key/value boundary with platform-neutral method names:
 
-- `get(keys)` returns a partial object for the requested persisted keys.
-- `set(values)` persists only the provided keys and leaves other keys untouched.
+- `read(keys)` returns a partial object for the requested persisted keys.
+- `write(values)` persists only the provided keys and leaves other keys untouched.
 
 The persisted keys and value shapes must stay compatible with the Chrome extension:
 
@@ -24,6 +24,14 @@ The persisted keys and value shapes must stay compatible with the Chrome extensi
 - `customParams?: string[]`
 
 Chrome uses `chrome.storage.local` in `src/storage/chrome-local-storage-adapter.ts`. iOS or Android ports can map the same values to local storage such as UserDefaults, SharedPreferences, or an app database, as long as the key names and shapes above are preserved.
+
+## iOS and Android shell guidance
+
+- Keep URL cleaning, subscription evaluation, and popup view-model decisions in `src/core`; these modules should stay free of `chrome.*`, WebExtension globals, native SDKs, DOM APIs, and storage implementations.
+- Implement one storage adapter per platform in the app shell. The adapter may use UserDefaults, SharedPreferences, or another local-only store, but it should expose only `read` and `write` to shared logic.
+- Preserve the existing stored key names and JSON-compatible value shapes so users can migrate data without conversion rules.
+- Keep UI code as an adapter layer: provide the current URL, localized strings, clipboard writes, and button/input rendering from the platform shell, then consume core view models for display decisions.
+- Do not add network calls, remote code, external fonts, or extra Chrome permissions for portability work.
 
 ## Porting checklist
 
