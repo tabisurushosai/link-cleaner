@@ -12,10 +12,12 @@ link-cleaner keeps platform-specific APIs outside of pure logic so the same beha
 ## Storage adapter contract
 
 Native ports should implement `LinkCleanerStorageAdapter` from `src/storage/storage-adapter.ts`.
-The adapter is a small key/value boundary with platform-neutral method names:
+The adapter is based on the platform-neutral `StorageAdapter<TValues, TKey>` interface:
 
 - `read(keys)` returns a partial object for the requested persisted keys.
 - `write(values)` persists only the provided keys and leaves other keys untouched.
+
+`LinkCleanerStorageAdapter` is the app-specific alias for the existing link-cleaner keys. Keep native storage code outside `src/core`; core modules should receive already-loaded values or view-model inputs and should not know where data came from.
 
 The persisted keys and value shapes must stay compatible with the Chrome extension:
 
