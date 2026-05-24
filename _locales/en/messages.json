@@ -3,7 +3,7 @@
     "message": "Link Cleaner"
   },
   "extDesc": {
-    "message": "Remove tracking parameters (such as utm_) from the current URL and copy a cleaner link."
+    "message": "Remove tracking parameters (such as utm_*) from the current URL and copy a cleaner link for sharing."
   },
   "appName": {
     "message": "Link Cleaner"
@@ -12,7 +12,7 @@
     "message": "Use Tab to move between items, and press Enter or Space to activate buttons."
   },
   "onboardingGuide": {
-    "message": "Open this on a page, then copy a cleaner link with the button below."
+    "message": "Open a web page, then use this button to copy a shareable link without tracking parameters."
   },
   "emptyStateNoUrl": {
     "message": "No page URL is available. Open a web page, then open Link Cleaner again."
@@ -27,7 +27,12 @@
     "message": "Copy cleaned URL"
   },
   "buyPremiumAriaLabel": {
-    "message": "Upgrade to Premium"
+    "message": "Upgrade to Premium ($PRICE$ one-time purchase)",
+    "placeholders": {
+      "price": {
+        "content": "$1"
+      }
+    }
   },
   "addCustomRuleAriaLabel": {
     "message": "Add custom rule"
@@ -45,10 +50,10 @@
     "message": "Loading..."
   },
   "errorNotFound": {
-    "message": "URL not found"
+    "message": "URL not found."
   },
   "statusCopied": {
-    "message": "Copied!"
+    "message": "Clean link copied."
   },
   "statusError": {
     "message": "Something went wrong."
@@ -57,7 +62,7 @@
     "message": "Processing..."
   },
   "statusRuleAdded": {
-    "message": "Added: $PARAM$",
+    "message": "Custom rule added: $PARAM$",
     "placeholders": {
       "param": {
         "content": "$1"
@@ -65,7 +70,7 @@
     }
   },
   "premiumStatus": {
-    "message": "Premium active"
+    "message": "Premium is active"
   },
   "trialStatus": {
     "message": "Trial: $DAYS$ days left",
@@ -84,21 +89,26 @@
     }
   },
   "freeStatus": {
-    "message": "Free version (trial ended)"
+    "message": "Free version (trial has ended)"
   },
   "buttonBuy": {
-    "message": "Upgrade to Premium ($3 one-time)"
+    "message": "Upgrade to Premium ($PRICE$ one-time purchase)",
+    "placeholders": {
+      "price": {
+        "content": "$1"
+      }
+    }
   },
   "buttonAddParam": {
-    "message": "Add Rule"
+    "message": "Add rule"
   },
   "customParamLabel": {
     "message": "Custom rule"
   },
   "placeholderAddParam": {
-    "message": "Parameter name"
+    "message": "e.g. ref"
   },
   "msgPremiumOnly": {
-    "message": "Premium is required for custom rules."
+    "message": "Premium is required to save custom rules."
   }
 }

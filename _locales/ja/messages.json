@@ -3,16 +3,16 @@
     "message": "すっきりリンク"
   },
   "extDesc": {
-    "message": "現在のページのURLから追跡パラメータ（utm_ など）を取り除いてコピーします。共有するリンクをすっきり保てます。"
+    "message": "現在のページのURLから追跡パラメータ（utm_* など）を取り除き、共有しやすいリンクとしてコピーします。"
   },
   "appName": {
     "message": "すっきりリンク"
   },
   "keyboardHelp": {
-    "message": "Tabキーで項目を移動し、EnterまたはSpaceでボタンを実行できます。"
+    "message": "Tabキーで項目を移動し、EnterキーまたはSpaceキーでボタンを実行できます。"
   },
   "onboardingGuide": {
-    "message": "ページを開いたら、このボタンからすっきりした共有リンクをコピーできます。"
+    "message": "Webページを開いてから、このボタンで追跡パラメータを除いた共有リンクをコピーできます。"
   },
   "emptyStateNoUrl": {
     "message": "URLを取得できませんでした。Webページを開いてから拡張機能をもう一度開いてください。"
@@ -27,7 +27,12 @@
     "message": "除去後のURLをコピー"
   },
   "buyPremiumAriaLabel": {
-    "message": "プレミアムにアップグレード"
+    "message": "プレミアムにアップグレード（$PRICE$・買い切り）",
+    "placeholders": {
+      "price": {
+        "content": "$1"
+      }
+    }
   },
   "addCustomRuleAriaLabel": {
     "message": "カスタムルールを追加"
@@ -45,19 +50,19 @@
     "message": "読み込み中…"
   },
   "errorNotFound": {
-    "message": "URLが見つかりません。"
+    "message": "URLを取得できませんでした。"
   },
   "statusCopied": {
     "message": "コピーしました。"
   },
   "statusError": {
-    "message": "エラーが発生しました。"
+    "message": "処理中にエラーが発生しました。"
   },
   "statusProcessing": {
     "message": "処理中…"
   },
   "statusRuleAdded": {
-    "message": "追加しました：$PARAM$",
+    "message": "カスタムルールを追加しました：$PARAM$",
     "placeholders": {
       "param": {
         "content": "$1"
@@ -65,10 +70,10 @@
     }
   },
   "premiumStatus": {
-    "message": "プレミアム有効"
+    "message": "プレミアムは有効です"
   },
   "trialStatus": {
-    "message": "試用期間：残り $DAYS$ 日",
+    "message": "試用期間は残り $DAYS$ 日です",
     "placeholders": {
       "days": {
         "content": "$1"
@@ -76,7 +81,7 @@
     }
   },
   "trialStatusOneDay": {
-    "message": "試用期間：残り $DAYS$ 日",
+    "message": "試用期間は残り $DAYS$ 日です",
     "placeholders": {
       "days": {
         "content": "$1"
@@ -84,10 +89,15 @@
     }
   },
   "freeStatus": {
-    "message": "無料版（試用期間終了）"
+    "message": "無料版（試用期間は終了しました）"
   },
   "buttonBuy": {
-    "message": "プレミアムにアップグレード（$3買い切り）"
+    "message": "プレミアムにアップグレード（$PRICE$・買い切り）",
+    "placeholders": {
+      "price": {
+        "content": "$1"
+      }
+    }
   },
   "buttonAddParam": {
     "message": "ルールを追加"
@@ -99,6 +109,6 @@
     "message": "例：ref"
   },
   "msgPremiumOnly": {
-    "message": "プレミアム限定機能です。"
+    "message": "カスタムルールの保存にはプレミアムが必要です。"
   }
 }
