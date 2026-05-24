@@ -6,6 +6,7 @@ export interface UrlViewModel {
   cleanedText: string;
   cleanedUrl: string;
   canCopy: boolean;
+  emptyStateMessageKey?: 'emptyStateNoUrl';
 }
 
 export type SubscriptionMessageKey = 'premiumStatus' | 'trialStatus' | 'trialStatusOneDay' | 'freeStatus';
@@ -27,7 +28,8 @@ export function createUrlViewModel(
       originalText: notFoundText,
       cleanedText: notFoundText,
       cleanedUrl: '',
-      canCopy: false
+      canCopy: false,
+      emptyStateMessageKey: 'emptyStateNoUrl'
     };
   }
 

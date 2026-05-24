@@ -17,6 +17,7 @@ async function init() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   const originalDisplay = document.getElementById('original-url');
   const cleanedDisplay = document.getElementById('cleaned-url');
+  const emptyStateDisplay = document.getElementById('empty-state');
   const copyBtn = document.getElementById('copy-btn') as HTMLButtonElement | null;
   const statusDisplay = document.getElementById('status');
 
@@ -58,6 +59,13 @@ async function init() {
     cleanedUrl = viewModel.cleanedUrl;
     if (originalDisplay) originalDisplay.textContent = viewModel.originalText;
     if (cleanedDisplay) cleanedDisplay.textContent = viewModel.cleanedText;
+    if (emptyStateDisplay) {
+      emptyStateDisplay.hidden = !viewModel.emptyStateMessageKey;
+      emptyStateDisplay.textContent = viewModel.emptyStateMessageKey
+        ? chrome.i18n.getMessage(viewModel.emptyStateMessageKey)
+        : '';
+    }
+    setDisabled(copyBtn, !viewModel.canCopy);
   };
 
   const refreshSubscriptionUI = async () => {

@@ -11,6 +11,12 @@
   "keyboardHelp": {
     "message": "Tabキーで項目を移動し、EnterまたはSpaceでボタンを実行できます。"
   },
+  "onboardingGuide": {
+    "message": "ページを開いたら、このボタンからすっきりした共有リンクをコピーできます。"
+  },
+  "emptyStateNoUrl": {
+    "message": "URLを取得できませんでした。Webページを開いてから拡張機能をもう一度開いてください。"
+  },
   "originalUrlAriaLabel": {
     "message": "除去前のURL"
   },

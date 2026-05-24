@@ -17,6 +17,18 @@ describe('popup view model', () => {
     });
   });
 
+  it('exposes an empty state when the current URL is unavailable', () => {
+    const viewModel = createUrlViewModel(undefined, ['utm_source'], 'URL not found');
+
+    expect(viewModel).toEqual({
+      originalText: 'URL not found',
+      cleanedText: 'URL not found',
+      cleanedUrl: '',
+      canCopy: false,
+      emptyStateMessageKey: 'emptyStateNoUrl'
+    });
+  });
+
   it('keeps subscription UI decisions platform independent', () => {
     const viewModel = createSubscriptionViewModel({
       isPremium: false,
