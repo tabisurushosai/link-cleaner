@@ -6,8 +6,22 @@ import type {
   LinkCleanerStorageWrite
 } from './storage-adapter';
 
+type LinkCleanerRawStorage = Partial<{
+  [Key in LinkCleanerStorageKey]: LinkCleanerStorageValues[Key];
+}>;
+
+function setSnapshotValue<Key extends LinkCleanerStorageKey>(
+  snapshot: LinkCleanerStorageSnapshot,
+  key: Key,
+  value: LinkCleanerStorageValues[Key]
+): void {
+  if (value === undefined) return;
+
+  Object.assign(snapshot, { [key]: value });
+}
+
 function toStorageSnapshot(
-  result: Partial<Record<LinkCleanerStorageKey, unknown>>,
+  result: LinkCleanerRawStorage,
   keys: readonly LinkCleanerStorageKey[]
 ): LinkCleanerStorageSnapshot {
   const snapshot: LinkCleanerStorageSnapshot = {};
@@ -15,13 +29,7 @@ function toStorageSnapshot(
   keys.forEach(key => {
     if (!Object.prototype.hasOwnProperty.call(result, key)) return;
 
-    if (key === 'isPremium') {
-      snapshot.isPremium = result[key] as LinkCleanerStorageValues['isPremium'];
-    } else if (key === 'trialStartTs') {
-      snapshot.trialStartTs = result[key] as LinkCleanerStorageValues['trialStartTs'];
-    } else {
-      snapshot.customParams = result[key] as LinkCleanerStorageValues['customParams'];
-    }
+    setSnapshotValue(snapshot, key, result[key]);
   });
 
   return snapshot;
