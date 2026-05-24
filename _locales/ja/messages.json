@@ -11,11 +11,20 @@
   "keyboardHelp": {
     "message": "Tabキーで項目を移動し、EnterキーまたはSpaceキーでボタンを実行できます。"
   },
+  "onboardingTitle": {
+    "message": "初めての方へ"
+  },
   "onboardingGuide": {
-    "message": "Webページを開いてから、このボタンで追跡パラメータを除いた共有リンクをコピーできます。"
+    "message": "開いているページのURLから追跡パラメータを取り除き、コピーですぐ共有できます。"
+  },
+  "emptyStateTitle": {
+    "message": "ページのURLが見つかりません"
   },
   "emptyStateNoUrl": {
-    "message": "URLを取得できませんでした。Webページを開いてから拡張機能をもう一度開いてください。"
+    "message": "Chromeの新しいタブ、設定画面、ストアなどではURLを取得できません。"
+  },
+  "emptyStateOpenPageAction": {
+    "message": "通常のWebページを開いてから、もう一度すっきりリンクを開いてください。"
   },
   "originalUrlAriaLabel": {
     "message": "除去前のURL"

@@ -6,7 +6,11 @@ export interface UrlViewModel {
   cleanedText: string;
   cleanedUrl: string;
   canCopy: boolean;
-  emptyStateMessageKey?: 'emptyStateNoUrl';
+  emptyState?: {
+    titleMessageKey: 'emptyStateTitle';
+    descriptionMessageKey: 'emptyStateNoUrl';
+    actionMessageKey: 'emptyStateOpenPageAction';
+  };
 }
 
 export type SubscriptionMessageKey = 'premiumStatus' | 'trialStatus' | 'trialStatusOneDay' | 'freeStatus';
@@ -29,7 +33,11 @@ export function createUrlViewModel(
       cleanedText: notFoundText,
       cleanedUrl: '',
       canCopy: false,
-      emptyStateMessageKey: 'emptyStateNoUrl'
+      emptyState: {
+        titleMessageKey: 'emptyStateTitle',
+        descriptionMessageKey: 'emptyStateNoUrl',
+        actionMessageKey: 'emptyStateOpenPageAction'
+      }
     };
   }
 

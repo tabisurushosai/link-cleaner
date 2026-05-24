@@ -29,6 +29,9 @@ async function init() {
   const originalDisplay = document.getElementById('original-url');
   const cleanedDisplay = document.getElementById('cleaned-url');
   const emptyStateDisplay = document.getElementById('empty-state');
+  const emptyStateTitle = document.getElementById('empty-state-title');
+  const emptyStateDescription = document.getElementById('empty-state-description');
+  const emptyStateAction = document.getElementById('empty-state-action');
   const copyBtn = document.getElementById('copy-btn') as HTMLButtonElement | null;
   const statusDisplay = document.getElementById('status');
 
@@ -63,9 +66,21 @@ async function init() {
     if (originalDisplay) originalDisplay.textContent = viewModel.originalText;
     if (cleanedDisplay) cleanedDisplay.textContent = viewModel.cleanedText;
     if (emptyStateDisplay) {
-      emptyStateDisplay.hidden = !viewModel.emptyStateMessageKey;
-      emptyStateDisplay.textContent = viewModel.emptyStateMessageKey
-        ? getMessage(viewModel.emptyStateMessageKey)
+      emptyStateDisplay.hidden = !viewModel.emptyState;
+    }
+    if (emptyStateTitle) {
+      emptyStateTitle.textContent = viewModel.emptyState
+        ? getMessage(viewModel.emptyState.titleMessageKey)
+        : '';
+    }
+    if (emptyStateDescription) {
+      emptyStateDescription.textContent = viewModel.emptyState
+        ? getMessage(viewModel.emptyState.descriptionMessageKey)
+        : '';
+    }
+    if (emptyStateAction) {
+      emptyStateAction.textContent = viewModel.emptyState
+        ? getMessage(viewModel.emptyState.actionMessageKey)
         : '';
     }
     setDisabled(copyBtn, !viewModel.canCopy);

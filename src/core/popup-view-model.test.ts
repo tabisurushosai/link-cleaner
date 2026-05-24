@@ -25,7 +25,11 @@ describe('popup view model', () => {
       cleanedText: 'URL not found',
       cleanedUrl: '',
       canCopy: false,
-      emptyStateMessageKey: 'emptyStateNoUrl'
+      emptyState: {
+        titleMessageKey: 'emptyStateTitle',
+        descriptionMessageKey: 'emptyStateNoUrl',
+        actionMessageKey: 'emptyStateOpenPageAction'
+      }
     });
   });
 
