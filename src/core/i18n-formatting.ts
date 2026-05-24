@@ -16,6 +16,14 @@ export function formatLocalizedNumber(value: number, locale: SupportedLocale): s
   return new Intl.NumberFormat(INTL_LOCALES[locale]).format(value);
 }
 
+export function formatLocalizedDate(value: number, locale: SupportedLocale): string {
+  return new Intl.DateTimeFormat(INTL_LOCALES[locale], {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  }).format(value);
+}
+
 export function formatUsdPrice(value: number, locale: SupportedLocale): string {
   const formattedNumber = new Intl.NumberFormat(INTL_LOCALES[locale], {
     maximumFractionDigits: 0,
@@ -38,9 +46,19 @@ export function formatMessageArgs(
   if (!args) return undefined;
 
   if (messageKey === 'trialStatus' || messageKey === 'trialStatusOneDay') {
-    const messageArgs = Array.isArray(args) ? args : [args];
-    return messageArgs.map(arg => formatLocalizedNumber(Number(arg), locale));
+    return formatTrialStatusArgs(args, locale);
   }
 
   return args;
+}
+
+function formatTrialStatusArgs(args: Exclude<MessageArgs, undefined>, locale: SupportedLocale): string[] {
+  const [daysLeft, endDate] = Array.isArray(args) ? args : [args];
+  const formattedArgs = [formatLocalizedNumber(Number(daysLeft), locale)];
+
+  if (endDate) {
+    formattedArgs.push(formatLocalizedDate(Number(endDate), locale));
+  }
+
+  return formattedArgs;
 }

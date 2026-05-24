@@ -37,7 +37,8 @@ describe('popup view model', () => {
     const viewModel = createSubscriptionViewModel({
       isPremium: false,
       isTrialActive: false,
-      trialDaysLeft: 0
+      trialDaysLeft: 0,
+      trialEndsAt: 0
     });
 
     expect(viewModel).toEqual({
@@ -48,15 +49,17 @@ describe('popup view model', () => {
   });
 
   it('uses a singular trial message key for one day left', () => {
+    const trialEndsAt = new Date(2026, 4, 24, 12).getTime();
     const viewModel = createSubscriptionViewModel({
       isPremium: false,
       isTrialActive: true,
-      trialDaysLeft: 1
+      trialDaysLeft: 1,
+      trialEndsAt
     });
 
     expect(viewModel).toEqual({
       messageKey: 'trialStatusOneDay',
-      messageArgs: ['1'],
+      messageArgs: ['1', trialEndsAt.toString()],
       showBuyButton: true,
       canEditCustomParams: true
     });

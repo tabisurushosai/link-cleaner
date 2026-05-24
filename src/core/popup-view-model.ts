@@ -64,7 +64,7 @@ export function createSubscriptionViewModel(status: SubscriptionStatus): Subscri
   if (status.isTrialActive) {
     return {
       messageKey: status.trialDaysLeft === 1 ? 'trialStatusOneDay' : 'trialStatus',
-      messageArgs: [status.trialDaysLeft.toString()],
+      messageArgs: [status.trialDaysLeft.toString(), status.trialEndsAt.toString()],
       showBuyButton: true,
       canEditCustomParams
     };

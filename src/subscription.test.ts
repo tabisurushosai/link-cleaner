@@ -48,6 +48,7 @@ describe('Subscription Logic', () => {
     expect(status.isPremium).toBe(false);
     expect(status.isTrialActive).toBe(true);
     expect(status.trialDaysLeft).toBe(7);
+    expect(status.trialEndsAt).toBe((state.trialStartTs as number) + TRIAL_PERIOD_MS);
   });
 
   it('should detect premium users', async () => {
@@ -64,5 +65,6 @@ describe('Subscription Logic', () => {
     const status = await getSubscriptionStatus(adapter);
     expect(status.isTrialActive).toBe(false);
     expect(status.trialDaysLeft).toBe(0);
+    expect(status.trialEndsAt).toBe(longAgo + TRIAL_PERIOD_MS);
   });
 });
