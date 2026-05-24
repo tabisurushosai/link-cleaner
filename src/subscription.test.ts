@@ -3,17 +3,17 @@ import { TRIAL_PERIOD_MS } from './core/subscription';
 import { getSubscriptionStatus } from './storage/link-cleaner-storage';
 import type {
   LinkCleanerStorageAdapter,
-  LinkCleanerStoredValues,
-  LinkCleanerStoragePatch
+  LinkCleanerStorageValues,
+  LinkCleanerStorageSnapshot
 } from './storage/storage-adapter';
 
-function createMemoryStorage(initial: LinkCleanerStoredValues = {}) {
-  const state: LinkCleanerStoredValues = { ...initial };
+function createMemoryStorage(initial: LinkCleanerStorageValues = {}) {
+  const state: LinkCleanerStorageValues = { ...initial };
   const adapter: LinkCleanerStorageAdapter = {
-    async get(keys) {
-      return Object.fromEntries(keys.map(key => [key, state[key]])) as LinkCleanerStoragePatch;
+    async read(keys) {
+      return Object.fromEntries(keys.map(key => [key, state[key]])) as LinkCleanerStorageSnapshot;
     },
-    async set(values) {
+    async write(values) {
       Object.assign(state, values);
     }
   };
