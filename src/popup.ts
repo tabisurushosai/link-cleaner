@@ -14,10 +14,12 @@ import {
   PREMIUM_PRICE_USD
 } from './core/i18n-formatting';
 
+type GetMessage = (messageKey: string, args?: MessageArgs) => string;
+
 async function init() {
   const uiLanguage = getSupportedLocale(chrome.i18n.getUILanguage());
   const premiumPrice = formatUsdPrice(PREMIUM_PRICE_USD, uiLanguage);
-  const getMessage = (messageKey: string, args?: MessageArgs) => chrome.i18n.getMessage(
+  const getMessage: GetMessage = (messageKey, args) => chrome.i18n.getMessage(
     messageKey,
     formatMessageArgs(messageKey, args, premiumPrice, uiLanguage)
   );
@@ -26,19 +28,19 @@ async function init() {
   document.documentElement.lang = uiLanguage;
 
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  const originalDisplay = document.getElementById('original-url');
-  const cleanedDisplay = document.getElementById('cleaned-url');
-  const emptyStateDisplay = document.getElementById('empty-state');
-  const emptyStateTitle = document.getElementById('empty-state-title');
-  const emptyStateDescription = document.getElementById('empty-state-description');
-  const emptyStateAction = document.getElementById('empty-state-action');
-  const copyBtn = document.getElementById('copy-btn') as HTMLButtonElement | null;
-  const statusDisplay = document.getElementById('status');
+  const originalDisplay = getElementById('original-url');
+  const cleanedDisplay = getElementById('cleaned-url');
+  const emptyStateDisplay = getElementById('empty-state');
+  const emptyStateTitle = getElementById('empty-state-title');
+  const emptyStateDescription = getElementById('empty-state-description');
+  const emptyStateAction = getElementById('empty-state-action');
+  const copyBtn = getElementById<HTMLButtonElement>('copy-btn');
+  const statusDisplay = getElementById('status');
 
-  const subStatusDisplay = document.getElementById('subscription-status');
-  const buyBtn = document.getElementById('buy-btn') as HTMLButtonElement | null;
-  const addParamBtn = document.getElementById('add-param-btn') as HTMLButtonElement | null;
-  const customParamInput = document.getElementById('custom-param-input') as HTMLInputElement | null;
+  const subStatusDisplay = getElementById('subscription-status');
+  const buyBtn = getElementById<HTMLButtonElement>('buy-btn');
+  const addParamBtn = getElementById<HTMLButtonElement>('add-param-btn');
+  const customParamInput = getElementById<HTMLInputElement>('custom-param-input');
 
   let cleanedUrl = '';
 
@@ -120,13 +122,8 @@ async function init() {
     }
     if (buyBtn) buyBtn.hidden = !viewModel.showBuyButton;
 
-    if (!viewModel.canEditCustomParams) {
-      setDisabled(addParamBtn, true);
-      setDisabled(customParamInput, true);
-    } else {
-      setDisabled(addParamBtn, false);
-      setDisabled(customParamInput, false);
-    }
+    setDisabled(addParamBtn, !viewModel.canEditCustomParams);
+    setDisabled(customParamInput, !viewModel.canEditCustomParams);
   };
 
   await refreshUrl();
@@ -192,13 +189,17 @@ async function init() {
   }
 }
 
-function translateUI(getMessage: (messageKey: string, args?: MessageArgs) => string) {
+function getElementById<TElement extends HTMLElement = HTMLElement>(id: string): TElement | null {
+  return document.getElementById(id) as TElement | null;
+}
+
+function translateUI(getMessage: GetMessage) {
   translateTextContent(getMessage);
   translateAttribute(getMessage, '[data-i18n-placeholder]', 'data-i18n-placeholder', 'placeholder');
   translateAttribute(getMessage, '[data-i18n-aria-label]', 'data-i18n-aria-label', 'aria-label');
 }
 
-function translateTextContent(getMessage: (messageKey: string, args?: MessageArgs) => string) {
+function translateTextContent(getMessage: GetMessage) {
   const elements = document.querySelectorAll('[data-i18n]');
   elements.forEach(el => {
     const key = el.getAttribute('data-i18n');
@@ -212,7 +213,7 @@ function translateTextContent(getMessage: (messageKey: string, args?: MessageArg
 }
 
 function translateAttribute(
-  getMessage: (messageKey: string, args?: MessageArgs) => string,
+  getMessage: GetMessage,
   selector: string,
   keyAttribute: string,
   targetAttribute: string
