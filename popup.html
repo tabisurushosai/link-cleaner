@@ -6,19 +6,25 @@
     :root {
       color-scheme: light;
       --bg: #ffffff;
+      --surface: #f8fafc;
+      --surface-strong: #f1f5f9;
       --text: #1f2937;
-      --muted: #4b5563;
-      --border: #6b7280;
-      --border-subtle: #e5e7eb;
+      --muted: #475569;
+      --border: #64748b;
+      --border-subtle: #cbd5e1;
       --primary: #0b5ed7;
+      --primary-strong: #084298;
+      --primary-soft: #dbeafe;
       --premium: #146c43;
       --focus: #111827;
       --success: #0f766e;
+      --success-soft: #ccfbf1;
       --error: #b91c1c;
-      --control-bg: #f8f9fa;
-      --disabled-bg: #e5e7eb;
+      --error-soft: #fee2e2;
+      --control-bg: #ffffff;
+      --disabled-bg: #e2e8f0;
       --disabled-text: #4b5563;
-      --disabled-border: #9ca3af;
+      --disabled-border: #94a3b8;
     }
 
     * {
@@ -26,45 +32,57 @@
     }
 
     body {
-      width: 320px;
+      width: 340px;
       margin: 0;
-      padding: 14px;
+      padding: 16px;
       background: var(--bg);
       color: var(--text);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       font-size: 14px;
-      line-height: 1.4;
+      line-height: 1.5;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
     h1 {
-      margin: 0 0 12px;
-      font-size: 18px;
-      line-height: 1.25;
+      margin: 0;
+      color: #0f172a;
+      font-size: 19px;
+      line-height: 1.2;
+      letter-spacing: 0.01em;
     }
 
     .url-section {
-      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      background: var(--surface);
     }
 
     .guide-text,
     .empty-state {
-      margin: 0 0 12px;
+      margin: 0;
       color: var(--muted);
       font-size: 12px;
+      line-height: 1.55;
     }
 
     .guide-text {
-      padding: 10px;
+      padding: 10px 12px;
       border: 1px solid #bfdbfe;
-      border-radius: 6px;
-      background: #eff6ff;
+      border-radius: 10px;
+      background: var(--primary-soft);
     }
 
     .empty-state {
-      padding: 10px;
-      border: 1px solid var(--border-subtle);
-      border-radius: 6px;
-      background: #f9fafb;
+      padding: 12px;
+      border: 1px solid #fed7aa;
+      border-radius: 10px;
+      background: #fff7ed;
     }
 
     .empty-state[hidden] {
@@ -82,37 +100,63 @@
     .empty-state-action {
       display: block;
       margin-top: 6px;
-      color: var(--primary);
+      color: var(--primary-strong);
       font-weight: 700;
     }
 
     .url-label,
     .field-label {
       display: block;
-      margin-bottom: 4px;
-      color: var(--muted);
+      margin-bottom: 6px;
+      color: #334155;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .url-value {
       min-height: 2.8em;
-      padding: 10px;
+      padding: 9px 10px;
       border: 1px solid var(--border-subtle);
-      border-radius: 6px;
-      background: #f9fafb;
+      border-radius: 8px;
+      background: #ffffff;
       color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
       font-size: 12px;
-      line-height: 1.5;
+      line-height: 1.55;
       overflow-wrap: anywhere;
     }
 
     #original-url {
       color: var(--muted);
       text-decoration: line-through;
+      text-decoration-thickness: 1px;
+      text-decoration-color: #94a3b8;
     }
 
-    #cleaned-url {
+    .url-value.is-loading {
+      border-style: dashed;
+      background: var(--surface);
+      color: var(--muted);
+      font-family: inherit;
+      font-weight: 600;
+    }
+
+    .url-value.is-empty {
+      border-color: #fed7aa;
+      background: #fff7ed;
+      color: #9a3412;
+      font-family: inherit;
+      font-weight: 600;
+    }
+
+    #original-url.is-empty {
+      text-decoration: none;
+    }
+
+    #cleaned-url.is-cleaned {
+      border-color: #5eead4;
+      background: #f0fdfa;
+      color: #134e4a;
       font-weight: 700;
     }
 
@@ -147,7 +191,6 @@
 
     .primary-button {
       width: 100%;
-      margin-top: 10px;
       padding: 10px 12px;
       border: 0;
       background: var(--primary);
@@ -175,14 +218,23 @@
     }
 
     .status-message {
-      min-height: 1.4em;
-      margin-top: 8px;
+      margin: 0;
+      padding: 9px 10px;
+      border: 1px solid #5eead4;
+      border-radius: 8px;
+      background: var(--success-soft);
       color: var(--success);
       font-size: 12px;
       font-weight: 600;
     }
 
+    .status-message:empty {
+      display: none;
+    }
+
     .status-message.is-error {
+      border-color: #fecaca;
+      background: var(--error-soft);
       color: var(--error);
     }
 
@@ -199,12 +251,16 @@
     }
 
     .divider {
-      margin: 16px 0;
+      margin: 4px 0;
       border: 0;
       border-top: 1px solid var(--border-subtle);
     }
 
     #premium-section {
+      padding: 10px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      background: var(--surface-strong);
       font-size: 12px;
     }
 
@@ -226,6 +282,7 @@
       padding: 8px 10px;
       border: 1px solid var(--border);
       border-radius: 6px;
+      background: #ffffff;
       color: var(--text);
     }
 
@@ -253,12 +310,12 @@
 
   <section class="url-section" aria-labelledby="original-url-label">
     <div id="original-url-label" class="url-label" data-i18n="labelBefore">除去前：</div>
-    <div id="original-url" class="url-value" role="textbox" aria-readonly="true" tabindex="0" data-i18n="statusLoading" data-i18n-aria-label="originalUrlAriaLabel">読み込み中…</div>
+    <div id="original-url" class="url-value is-loading" role="textbox" aria-readonly="true" tabindex="0" data-i18n="statusLoading" data-i18n-aria-label="originalUrlAriaLabel">読み込み中…</div>
   </section>
 
   <section class="url-section" aria-labelledby="cleaned-url-label">
     <div id="cleaned-url-label" class="url-label" data-i18n="labelAfter">除去後：</div>
-    <div id="cleaned-url" class="url-value" role="textbox" aria-readonly="true" tabindex="0" data-i18n="statusLoading" data-i18n-aria-label="cleanedUrlAriaLabel">読み込み中…</div>
+    <div id="cleaned-url" class="url-value is-loading" role="textbox" aria-readonly="true" tabindex="0" data-i18n="statusLoading" data-i18n-aria-label="cleanedUrlAriaLabel">読み込み中…</div>
   </section>
 
   <button id="copy-btn" class="primary-button" type="button" data-i18n="buttonCopy" data-i18n-aria-label="copyCleanedUrlAriaLabel" aria-controls="cleaned-url" aria-describedby="onboarding-guide keyboard-help status">コピー</button>

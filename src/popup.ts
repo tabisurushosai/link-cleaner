@@ -63,8 +63,17 @@ async function init() {
     const params = tab?.url ? await getTrackingParams(chromeLocalStorageAdapter) : [];
     const viewModel = createUrlViewModel(tab?.url, params, getMessage('errorNotFound'));
     cleanedUrl = viewModel.cleanedUrl;
-    if (originalDisplay) originalDisplay.textContent = viewModel.originalText;
-    if (cleanedDisplay) cleanedDisplay.textContent = viewModel.cleanedText;
+    if (originalDisplay) {
+      originalDisplay.textContent = viewModel.originalText;
+      originalDisplay.classList.remove('is-loading');
+      originalDisplay.classList.toggle('is-empty', Boolean(viewModel.emptyState));
+    }
+    if (cleanedDisplay) {
+      cleanedDisplay.textContent = viewModel.cleanedText;
+      cleanedDisplay.classList.remove('is-loading');
+      cleanedDisplay.classList.toggle('is-empty', Boolean(viewModel.emptyState));
+      cleanedDisplay.classList.toggle('is-cleaned', viewModel.canCopy);
+    }
     if (emptyStateDisplay) {
       emptyStateDisplay.hidden = !viewModel.emptyState;
     }
