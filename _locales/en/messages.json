@@ -11,11 +11,20 @@
   "keyboardHelp": {
     "message": "Use Tab to move between items, and press Enter or Space to activate buttons."
   },
+  "onboardingTitle": {
+    "message": "First time here?"
+  },
   "onboardingGuide": {
-    "message": "Open a web page, then use this button to copy a shareable link without tracking parameters."
+    "message": "Remove tracking parameters from the open page URL, then copy a cleaner link for sharing."
+  },
+  "emptyStateTitle": {
+    "message": "No page URL found"
   },
   "emptyStateNoUrl": {
-    "message": "No page URL is available. Open a web page, then open Link Cleaner again."
+    "message": "Link Cleaner cannot read URLs on Chrome pages such as New Tab, Settings, or the Web Store."
+  },
+  "emptyStateOpenPageAction": {
+    "message": "Open a regular web page, then open Link Cleaner again."
   },
   "originalUrlAriaLabel": {
     "message": "Original URL"
