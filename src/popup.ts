@@ -46,9 +46,9 @@ async function init() {
 
   const setStatus = (message: string, isError = false) => {
     if (!statusDisplay) return;
-    statusDisplay.textContent = message;
     statusDisplay.classList.toggle('is-error', isError);
     statusDisplay.setAttribute('aria-live', isError ? 'assertive' : 'polite');
+    statusDisplay.textContent = message;
   };
 
   const setDisabled = (element: HTMLButtonElement | HTMLInputElement | null, disabled: boolean) => {
