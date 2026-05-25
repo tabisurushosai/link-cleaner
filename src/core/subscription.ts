@@ -44,10 +44,10 @@ export function canUseCustomParams(status: SubscriptionStatus): boolean {
 }
 
 export function getEffectiveTrackingParams(
-  customParams: string[] | undefined,
+  customParams: readonly string[] | undefined,
   status: SubscriptionStatus,
-  defaultParams: string[] = DEFAULT_PARAMS
-): string[] {
+  defaultParams: readonly string[] = DEFAULT_PARAMS
+): readonly string[] {
   if (customParams && canUseCustomParams(status)) {
     return [...new Set([...defaultParams, ...customParams])];
   }

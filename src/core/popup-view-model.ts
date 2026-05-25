@@ -29,7 +29,7 @@ export interface SubscriptionViewModel {
 
 export function createUrlViewModel(
   currentUrl: string | undefined,
-  params: string[],
+  params: readonly string[],
   notFoundText: string
 ): UrlViewModel {
   if (!currentUrl) {

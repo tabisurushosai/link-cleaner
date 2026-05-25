@@ -3,10 +3,6 @@ export type StorageReadResult<
   TValues,
   TKey extends StorageKey<TValues> = StorageKey<TValues>
 > = Partial<Pick<TValues, TKey>>;
-export type StorageSnapshot<
-  TValues,
-  TKey extends StorageKey<TValues> = StorageKey<TValues>
-> = StorageReadResult<TValues, TKey>;
 export type StorageWrite<TValues> = Readonly<Partial<TValues>>;
 
 export interface StorageReader<TValues> {
