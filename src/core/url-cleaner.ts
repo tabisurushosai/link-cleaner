@@ -13,26 +13,33 @@ export const DEFAULT_PARAMS = [
   'mc_eid',
   'msclkid',
   'yclid'
-];
+] as const;
 
-export function cleanUrl(urlStr: string, paramsToRemove: string[] = DEFAULT_PARAMS): string {
+export function cleanUrl(urlStr: string, paramsToRemove: readonly string[] = DEFAULT_PARAMS): string {
   try {
     const url = new URL(urlStr);
 
-    paramsToRemove.forEach(param => {
-      url.searchParams.delete(param);
-    });
-
-    const keysToDelete: string[] = [];
-    url.searchParams.forEach((_, key) => {
-      if (key.startsWith('utm_')) {
-        keysToDelete.push(key);
-      }
-    });
-    keysToDelete.forEach(key => url.searchParams.delete(key));
+    getTrackingKeysToDelete(url.searchParams, paramsToRemove)
+      .forEach(key => url.searchParams.delete(key));
 
     return url.toString();
   } catch {
     return urlStr;
   }
+}
+
+function getTrackingKeysToDelete(
+  searchParams: URLSearchParams,
+  paramsToRemove: readonly string[]
+): string[] {
+  const configuredParams = new Set(paramsToRemove);
+  const keysToDelete: string[] = [];
+
+  searchParams.forEach((_, key) => {
+    if (configuredParams.has(key) || key.startsWith('utm_')) {
+      keysToDelete.push(key);
+    }
+  });
+
+  return keysToDelete;
 }

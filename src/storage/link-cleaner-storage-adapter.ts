@@ -1,7 +1,7 @@
 import type {
   StorageAdapter,
   StorageKey,
-  StorageSnapshot,
+  StorageReadResult,
   StorageWrite
 } from './storage-adapter';
 
@@ -20,6 +20,6 @@ export const LINK_CLEANER_STORAGE_KEYS = [
 export type LinkCleanerStorageKey = (typeof LINK_CLEANER_STORAGE_KEYS)[number];
 export type LinkCleanerStorageSnapshot<
   TKey extends LinkCleanerStorageKey = LinkCleanerStorageKey
-> = StorageSnapshot<LinkCleanerStorageValues, TKey>;
+> = StorageReadResult<LinkCleanerStorageValues, TKey>;
 export type LinkCleanerStorageWrite = StorageWrite<LinkCleanerStorageValues>;
 export type LinkCleanerStorageAdapter = StorageAdapter<LinkCleanerStorageValues>;

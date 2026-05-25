@@ -22,7 +22,7 @@ export async function getSubscriptionStatus(
 
 export async function getTrackingParams(
   storage: LinkCleanerStorageAdapter
-): Promise<string[]> {
+): Promise<readonly string[]> {
   const status = await getSubscriptionStatus(storage);
   const result = await storage.read(['customParams']);
   const customParams = Array.isArray(result.customParams) ? result.customParams : undefined;
