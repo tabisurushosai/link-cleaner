@@ -6,14 +6,15 @@ link-cleaner keeps platform-specific APIs outside of pure logic so the same beha
 
 - `src/core` is pure TypeScript logic. Do not import `chrome.*`, browser `window`/`document` APIs, native SDKs, network APIs, or storage implementations here.
 - `src/core` must compile without Chrome extension types. `npm run build` runs `tsc -p tsconfig.core.json --noEmit` to catch accidental `chrome.*` usage in core modules.
-- `src/storage` owns persistence boundaries. App code should call storage use cases through a `LinkCleanerStorageAdapter` implementation.
+- `src/storage/storage-adapter.ts` contains only the platform-neutral storage contract.
+- `src/storage/link-cleaner-storage-adapter.ts` contains the link-cleaner persisted keys and the `LinkCleanerStorageAdapter` alias. App code should call storage use cases through that adapter.
 - UI entry points provide platform services such as the current URL, localized strings, clipboard access, and the storage adapter.
 
 `src/core` should receive plain values only: URLs as strings, tracking parameter arrays, subscription state, locale strings, and timestamps. Platform shells are responsible for reading those values from Chrome APIs, native app APIs, or local storage before calling core functions.
 
 ## Storage adapter contract
 
-Native ports should implement `LinkCleanerStorageAdapter` from `src/storage/storage-adapter.ts`.
+Native ports should implement `LinkCleanerStorageAdapter` from `src/storage/link-cleaner-storage-adapter.ts`.
 The adapter is based on the platform-neutral `StorageAdapter<TValues>` interface:
 
 - `read(keys)` returns a partial object for the requested persisted keys.
@@ -22,6 +23,13 @@ The adapter is based on the platform-neutral `StorageAdapter<TValues>` interface
 `LinkCleanerStorageAdapter` is the app-specific alias for the existing link-cleaner keys. Keep native storage code outside `src/core`; core modules should receive already-loaded values or view-model inputs and should not know where data came from.
 
 The shared contract is intentionally limited to `StorageReader` and `StorageWriter`. Platform adapters should not expose platform handles, transactions, or migration helpers to core use cases. If a native port needs conversion around UserDefaults, SharedPreferences, or a database row, do that inside the adapter and return the same plain JavaScript value shapes.
+
+Keep generic adapter helpers separate from app-specific keys:
+
+- Put reusable storage interface changes in `src/storage/storage-adapter.ts`.
+- Put link-cleaner key names and value shapes in `src/storage/link-cleaner-storage-adapter.ts`.
+- Keep Chrome-specific access in `src/storage/chrome-local-storage-adapter.ts`.
+- Do not import any of the storage files from `src/core`; pass loaded values into core functions instead.
 
 The persisted keys and value shapes must stay compatible with the Chrome extension:
 
@@ -49,7 +57,7 @@ Recommended native shell flow:
 ## Porting checklist
 
 1. Reuse `src/core/url-cleaner.ts`, `src/core/subscription.ts`, and `src/core/popup-view-model.ts` without platform API imports.
-2. Add a platform storage adapter that implements `LinkCleanerStorageAdapter`.
+2. Add a platform storage adapter that implements `LinkCleanerStorageAdapter` from `src/storage/link-cleaner-storage-adapter.ts`.
 3. Pass the adapter into `getSubscriptionStatus`, `getTrackingParams`, `saveCustomParam`, and `buyPremium`.
 4. Keep the app offline-only unless the product spec changes.
 5. Do not add Chrome permissions or host permissions for the extension port.

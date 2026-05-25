@@ -4,7 +4,7 @@ import { getSubscriptionStatus } from './storage/link-cleaner-storage';
 import type {
   LinkCleanerStorageAdapter,
   LinkCleanerStorageValues,
-} from './storage/storage-adapter';
+} from './storage/link-cleaner-storage-adapter';
 import { createStorageSnapshot } from './storage/storage-adapter';
 
 function createMemoryStorage(initial: LinkCleanerStorageValues = {}) {
