@@ -4,8 +4,8 @@ import {
   getEffectiveTrackingParams,
   type SubscriptionStatus
 } from '../core/subscription';
-import type { LinkCleanerStorageAdapter } from './storage-adapter';
-export type { LinkCleanerStorageAdapter } from './storage-adapter';
+import type { LinkCleanerStorageAdapter } from './link-cleaner-storage-adapter';
+export type { LinkCleanerStorageAdapter } from './link-cleaner-storage-adapter';
 
 export async function getSubscriptionStatus(
   storage: LinkCleanerStorageAdapter

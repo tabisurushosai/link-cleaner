@@ -3,7 +3,7 @@ import type {
   LinkCleanerStorageKey,
   LinkCleanerStorageSnapshot,
   LinkCleanerStorageWrite
-} from './storage-adapter';
+} from './link-cleaner-storage-adapter';
 import { createStorageSnapshot } from './storage-adapter';
 
 function readFromChrome(keys: readonly LinkCleanerStorageKey[]): Promise<LinkCleanerStorageSnapshot> {
